@@ -2,7 +2,6 @@ import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 
 import { createTheme, NextUIProvider } from '@nextui-org/react';
-import { ThemeProvider as NextThemesProvider } from 'next-themes';
 
 import {
 	ThirdwebProvider,
@@ -13,7 +12,6 @@ import {
 import { Ethereum, Sepolia, Polygon, Mumbai } from '@thirdweb-dev/chains';
 
 import { WALLET_CONNECT_ID } from '@/utils';
-
 
 const darkTheme = createTheme({
 	type: 'dark',
@@ -28,11 +26,9 @@ export default function App({ Component, pageProps }: AppProps) {
 				localWallet({ persist: true }),
 			]}
 		>
-			
-				<NextUIProvider theme={darkTheme}>
-					<Component {...pageProps} />
-				</NextUIProvider>
-			
+			<NextUIProvider theme={darkTheme}>
+				<Component {...pageProps} />
+			</NextUIProvider>
 		</ThirdwebProvider>
 	);
 }

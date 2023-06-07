@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.sidebar[data-isOpen='true'] {
+	width: 300px;
+}
+
+.sidebar[data-isOpen='false'] {
+	width: 88px;
+}

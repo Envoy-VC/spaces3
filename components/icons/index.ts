@@ -1,4 +1,5 @@
 import SunIcon from './SunIcon';
 import MoonIcon from './MoonIcon';
+import RightArrows from './RightArrows';
 
-export { SunIcon, MoonIcon };
+export { SunIcon, MoonIcon, RightArrows };
