@@ -14,9 +14,6 @@ import { Ethereum, Sepolia, Polygon, Mumbai } from '@thirdweb-dev/chains';
 
 import { WALLET_CONNECT_ID } from '@/utils';
 
-const lightTheme = createTheme({
-	type: 'light',
-});
 
 const darkTheme = createTheme({
 	type: 'dark',
@@ -31,18 +28,11 @@ export default function App({ Component, pageProps }: AppProps) {
 				localWallet({ persist: true }),
 			]}
 		>
-			<NextThemesProvider
-				defaultTheme='dark'
-				attribute='class'
-				value={{
-					light: lightTheme.className,
-					dark: darkTheme.className,
-				}}
-			>
-				<NextUIProvider>
+			
+				<NextUIProvider theme={darkTheme}>
 					<Component {...pageProps} />
 				</NextUIProvider>
-			</NextThemesProvider>
+			
 		</ThirdwebProvider>
 	);
 }
