@@ -24,7 +24,7 @@ const Sidebar = () => {
 				</div>
 			</div>
 			<div className='my-8'>
-				<Logout set='bold' primaryColor='#E0E1E2' size={32} />
+				<Logout set='bold' primaryColor='#F31260' size={32} />
 			</div>
 		</div>
 	);

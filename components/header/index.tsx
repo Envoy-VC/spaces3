@@ -20,7 +20,7 @@ const Header = () => {
 				<Button
 					icon={<Plus set='bold' />}
 					color='primary'
-					className='hidden sm:flex bg-[#0072F5] tet-white w-fit'
+					className='hidden sm:flex bg-[#0072F5]'
 					size='lg'
 					auto
 				>
