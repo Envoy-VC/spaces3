@@ -6,6 +6,6 @@
 	width: 300px;
 }
 
-.sidebar[data-isOpen='false'] {
-	width: 88px;
+.sidebar-username[data-isOpen='true'] {
+	display: flex;
 }

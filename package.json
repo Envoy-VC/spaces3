@@ -1,5 +1,5 @@
 {
-	"name": "synapse",
+	"name": "spaces3",
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
@@ -24,6 +24,7 @@
 		"postcss": "8.4.24",
 		"react": "18.2.0",
 		"react-dom": "18.2.0",
+		"react-iconly": "^2.2.10",
 		"tailwindcss": "3.3.2",
 		"typescript": "5.1.3"
 	}
