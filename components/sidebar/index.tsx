@@ -5,7 +5,7 @@ import { Home, Logout, Video, Setting, Plus } from 'react-iconly';
 
 const Sidebar = () => {
 	return (
-		<div className='flex flex-col h-screen w-[88px] justify-between items-center border-r border-gray-600'>
+		<div className='flex flex-col h-screen !w-[136px] justify-between items-center border-r border-gray-600'>
 			<div className='flex flex-col items-center w-full'>
 				<Avatar
 					size='lg'
