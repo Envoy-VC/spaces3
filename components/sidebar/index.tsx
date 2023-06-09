@@ -5,7 +5,7 @@ import { Home, Logout, Video, Setting, Plus } from 'react-iconly';
 
 const Sidebar = () => {
 	return (
-		<div className='flex flex-col h-screen !w-[136px] justify-between items-center border-r border-gray-600'>
+		<div className='hidden xl:flex flex-col h-screen !w-[88px] justify-between items-center border-r border-gray-600'>
 			<div className='flex flex-col items-center w-full'>
 				<Avatar
 					size='lg'
@@ -13,18 +13,18 @@ const Sidebar = () => {
 					color='gradient'
 					bordered
 					squared
-					className='my-8'
+					className='my-8 mx-8'
 				/>
 				<div className='border-[1px] border-gray-600 w-full' />
 				<div className='flex flex-col items-center gap-8 mt-8'>
-					<Home set='bold' primaryColor='#959CA7' size={32} />
+					<Home set='bold' primaryColor='#E0E1E2' size={32} />
 					<Plus set='bold' primaryColor='#0072F5' size={32} />
-					<Video set='bold' primaryColor='#959CA7' size={32} />
-					<Setting set='bold' primaryColor='#959CA7' size={32} />
+					<Video set='bold' primaryColor='#E0E1E2' size={32} />
+					<Setting set='bold' primaryColor='#E0E1E2' size={32} />
 				</div>
 			</div>
 			<div className='my-8'>
-				<Logout set='bold' primaryColor='#959CA7' size={32} />
+				<Logout set='bold' primaryColor='#E0E1E2' size={32} />
 			</div>
 		</div>
 	);

@@ -1,6 +1,6 @@
 import { Sidebar } from '@/components';
 
-import { Recommended, Dashboard } from '@/sections';
+import { Dashboard } from '@/sections';
 
 import { Inter } from 'next/font/google';
 
@@ -11,10 +11,7 @@ export default function Home() {
 		<main className={`${inter.className}`}>
 			<div className='flex flex-row justify-between'>
 				<Sidebar />
-				<div className='grow'>
-					<Dashboard />
-				</div>
-				<Recommended />
+				<Dashboard />
 			</div>
 		</main>
 	);

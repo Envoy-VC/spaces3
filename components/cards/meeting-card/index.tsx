@@ -14,7 +14,7 @@ const MeetingCard = () => {
 	return (
 		<Card
 			css={{
-				mw: '576px',
+				mw: '526px',
 				background: 'Black',
 				padding: '16px',
 				borderRadius: '24px',
