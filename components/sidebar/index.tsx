@@ -4,15 +4,35 @@ import { useRouter } from 'next/navigation';
 
 import { Home, Logout, Video, Setting, Plus } from 'react-iconly';
 
-const Sidebar = () => {
-	const [activeTab, setActiveTab] = React.useState<
-		'home' | 'create' | 'join' | 'dashboard'
-	>('home');
+export type Tabs = 'home' | 'create' | 'join' | 'dashboard';
 
+const Sidebar = () => {
 	const router = useRouter();
 
-	const handleClick = (tab: 'home' | 'create' | 'join' | 'dashboard') => {
-		setActiveTab(tab);
+	const tabs = [
+		{
+			name: 'home',
+			icon: <Home set='bold' primaryColor='#E0E1E2' size={32} />,
+			link: '/',
+		},
+		{
+			name: 'join',
+			icon: <Plus set='bold' primaryColor='#E0E1E2' size={32} />,
+			link: '/join',
+		},
+		{
+			name: 'create',
+			icon: <Video set='bold' primaryColor='#E0E1E2' size={32} />,
+			link: '/create',
+		},
+		{
+			name: 'dashboard',
+			icon: <Setting set='bold' primaryColor='#E0E1E2' size={32} />,
+			link: '/dashboard',
+		},
+	];
+
+	const handleClick = (tab: Tabs) => {
 		router.push(tab === 'home' ? '/' : `/${tab}`);
 	};
 
@@ -29,54 +49,15 @@ const Sidebar = () => {
 				/>
 				<div className='border-[1px] border-gray-600 w-full' />
 				<div className='flex flex-col items-center gap-8 mt-8'>
-					<Button
-						auto
-						light
-						onPress={() => handleClick('home')}
-						icon={
-							<Home
-								set='bold'
-								primaryColor={activeTab === 'home' ? '#0072F5' : '#E0E1E2'}
-								size={32}
-							/>
-						}
-					/>
-					<Button
-						auto
-						light
-						onPress={() => handleClick('join')}
-						icon={
-							<Plus
-								set='bold'
-								primaryColor={activeTab === 'join' ? '#0072F5' : '#E0E1E2'}
-								size={32}
-							/>
-						}
-					/>
-					<Button
-						auto
-						light
-						onPress={() => handleClick('create')}
-						icon={
-							<Video
-								set='bold'
-								primaryColor={activeTab === 'create' ? '#0072F5' : '#E0E1E2'}
-								size={32}
-							/>
-						}
-					/>
-					<Button
-						auto
-						light
-						onPress={() => handleClick('dashboard')}
-						icon={
-							<Setting
-								set='bold'
-								primaryColor={activeTab === 'dashboard' ? '#0072F5' : '#E0E1E2'}
-								size={32}
-							/>
-						}
-					/>
+					{tabs.map((tab, index) => (
+						<Button
+							key={index}
+							auto
+							light
+							onPress={() => handleClick(tab.name as Tabs)}
+							icon={tab.icon}
+						/>
+					))}
 				</div>
 			</div>
 			<div className='my-8'>

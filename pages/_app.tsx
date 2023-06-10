@@ -9,7 +9,6 @@ import {
 	walletConnect,
 	localWallet,
 } from '@thirdweb-dev/react';
-import { Ethereum, Sepolia, Polygon, Mumbai } from '@thirdweb-dev/chains';
 
 import { WALLET_CONNECT_ID } from '@/utils';
 
