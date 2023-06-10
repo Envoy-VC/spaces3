@@ -1,5 +1,6 @@
 import React from 'react';
 import { Avatar, Button, Tooltip } from '@nextui-org/react';
+import { useAddress, useDisconnect } from '@thirdweb-dev/react';
 import { useRouter } from 'next/navigation';
 
 import { Home, Logout, Video, Setting, Plus } from 'react-iconly';
@@ -8,6 +9,8 @@ export type Tabs = 'home' | 'create' | 'join' | 'dashboard';
 
 const Sidebar = () => {
 	const router = useRouter();
+	const address = useAddress();
+	const disconnect = useDisconnect();
 
 	const tabs = [
 		{
@@ -71,7 +74,15 @@ const Sidebar = () => {
 				</div>
 			</div>
 			<div className='my-8'>
-				<Logout set='bold' primaryColor='#F31260' size={32} />
+				<Tooltip color='error' content='Disconnect' placement='right'>
+					<Button
+						auto
+						light
+						onPress={disconnect}
+						disabled={!address}
+						icon={<Logout set='bold' primaryColor='#F31260' size={32} />}
+					/>
+				</Tooltip>
 			</div>
 		</div>
 	);
