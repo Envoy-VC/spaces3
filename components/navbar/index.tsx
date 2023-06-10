@@ -1,4 +1,5 @@
-import { Navbar, Button } from '@nextui-org/react';
+import { Navbar } from '@nextui-org/react';
+import { ConnectWallet } from '@thirdweb-dev/react';
 import Link from 'next/link';
 
 import { Inter } from 'next/font/google';
@@ -23,11 +24,16 @@ const NavBar = () => {
 					</p>
 				</Navbar.Brand>
 				<Navbar.Content>
-					<Navbar.Item>
-						<Button auto bordered as={Link} href='#'>
-							Connect Wallet
-						</Button>
-					</Navbar.Item>
+					<ConnectWallet
+						btnTitle='CONNECT WALLET'
+						theme='dark'
+						className='!w-[200px] !rounded-xl'
+						style={{
+							backgroundColor: '#000',
+							color: '#0072f5',
+							border: '3px solid #0072f5',
+						}}
+					/>
 				</Navbar.Content>
 				<Navbar.Collapse>
 					{collapseItems.map((item, index) => (
