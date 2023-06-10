@@ -1,4 +1,4 @@
-import { Sidebar, NavBar } from '@/components';
+import { Sidebar, NavBar, CreateForm } from '@/components';
 import { Header } from '@/components/layout/headers';
 
 import { Inter } from 'next/font/google';
@@ -12,6 +12,7 @@ const Create = () => {
 				<Sidebar />
 				<div className='w-full'>
 					<Header />
+					<CreateForm />
 				</div>
 			</div>
 		</main>
