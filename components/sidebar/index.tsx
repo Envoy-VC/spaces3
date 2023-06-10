@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 
 import { Home, Logout, Video, Setting, Plus } from 'react-iconly';
 
+import Logo from '@/public/logo.png';
+
 export type Tabs = 'home' | 'create' | 'join' | 'dashboard';
 
 const Sidebar = () => {
@@ -48,8 +50,8 @@ const Sidebar = () => {
 			<div className='flex flex-col items-center w-full'>
 				<Avatar
 					size='lg'
-					src='https://i.pravatar.cc/150?u=a042581f4e25056704b'
-					color='gradient'
+					src={Logo.src}
+					color='primary'
 					bordered
 					squared
 					className='my-8 mx-8'
