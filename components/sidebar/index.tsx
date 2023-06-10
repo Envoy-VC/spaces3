@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Button } from '@nextui-org/react';
+import { Avatar, Button, Tooltip } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 
 import { Home, Logout, Video, Setting, Plus } from 'react-iconly';
@@ -12,21 +12,25 @@ const Sidebar = () => {
 	const tabs = [
 		{
 			name: 'home',
+			content: 'Home',
 			icon: <Home set='bold' primaryColor='#E0E1E2' size={32} />,
 			link: '/',
 		},
 		{
 			name: 'join',
+			content: 'Join Meeting',
 			icon: <Plus set='bold' primaryColor='#E0E1E2' size={32} />,
 			link: '/join',
 		},
 		{
 			name: 'create',
+			content: 'Create Meetings',
 			icon: <Video set='bold' primaryColor='#E0E1E2' size={32} />,
 			link: '/create',
 		},
 		{
 			name: 'dashboard',
+			content: 'Dashboard',
 			icon: <Setting set='bold' primaryColor='#E0E1E2' size={32} />,
 			link: '/dashboard',
 		},
@@ -50,13 +54,19 @@ const Sidebar = () => {
 				<div className='border-[1px] border-gray-600 w-full' />
 				<div className='flex flex-col items-center gap-8 mt-8'>
 					{tabs.map((tab, index) => (
-						<Button
+						<Tooltip
 							key={index}
-							auto
-							light
-							onPress={() => handleClick(tab.name as Tabs)}
-							icon={tab.icon}
-						/>
+							color='primary'
+							content={tab.content}
+							placement='right'
+						>
+							<Button
+								auto
+								light
+								onPress={() => handleClick(tab.name as Tabs)}
+								icon={tab.icon}
+							/>
+						</Tooltip>
 					))}
 				</div>
 			</div>

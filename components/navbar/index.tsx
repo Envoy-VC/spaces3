@@ -1,5 +1,5 @@
 import { Navbar } from '@nextui-org/react';
-import { ConnectWallet } from '@thirdweb-dev/react';
+import CustomConnectButton from '../custom-connect';
 import Link from 'next/link';
 
 import { Inter } from 'next/font/google';
@@ -35,16 +35,7 @@ const NavBar = () => {
 					</p>
 				</Navbar.Brand>
 				<Navbar.Content>
-					<ConnectWallet
-						btnTitle='CONNECT WALLET'
-						theme='dark'
-						className='!w-[200px] !rounded-xl'
-						style={{
-							backgroundColor: '#000',
-							color: '#0072f5',
-							border: '3px solid #0072f5',
-						}}
-					/>
+					<CustomConnectButton />
 				</Navbar.Content>
 				<Navbar.Collapse>
 					{tabs.map((item, index) => (
