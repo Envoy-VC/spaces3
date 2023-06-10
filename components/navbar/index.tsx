@@ -7,12 +7,23 @@ import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 
 const NavBar = () => {
-	const collapseItems = [
-		'Home',
-		'Create Meeting',
-		'Join Meeting',
-		'Dashboard',
-		'Logout',
+	const tabs = [
+		{
+			name: 'Home',
+			link: '/',
+		},
+		{
+			name: 'Join Meeting',
+			link: '/join',
+		},
+		{
+			name: 'Create Meeting',
+			link: '/create',
+		},
+		{
+			name: 'Dashboard',
+			link: '/dashboard',
+		},
 	];
 	return (
 		<div className='flex xl:hidden'>
@@ -36,18 +47,20 @@ const NavBar = () => {
 					/>
 				</Navbar.Content>
 				<Navbar.Collapse>
-					{collapseItems.map((item, index) => (
-						<Navbar.CollapseItem
-							key={item}
-							css={{
-								color: index === collapseItems.length - 1 ? '$error' : '',
-							}}
-						>
-							<Link color='inherit' href='#'>
-								{item}
+					{tabs.map((item, index) => (
+						<Navbar.CollapseItem key={index}>
+							<Link color='inherit' href={item.link}>
+								{item.name}
 							</Link>
 						</Navbar.CollapseItem>
 					))}
+					<Navbar.CollapseItem
+						css={{
+							color: '$error',
+						}}
+					>
+						Logout
+					</Navbar.CollapseItem>
 				</Navbar.Collapse>
 			</Navbar>
 		</div>
