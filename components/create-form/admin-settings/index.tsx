@@ -13,6 +13,8 @@ import { CaretLeft, Plus, AddUser, Delete } from 'react-iconly';
 import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 
+import { FormProps } from '..';
+
 type CreateFormStepProps = 'basic' | 'settings';
 type TokenType = 'ERC20' | 'ERC721' | 'ERC1155';
 type ChainType = 'ETHEREUM' | 'POLYGON';
@@ -20,9 +22,10 @@ type ChainType = 'ETHEREUM' | 'POLYGON';
 interface Props {
 	step: CreateFormStepProps;
 	setStep: React.Dispatch<React.SetStateAction<CreateFormStepProps>>;
+	form: FormProps;
 }
 
-const AdminDetails = ({ step, setStep }: Props) => {
+const AdminDetails = ({ step, setStep, form }: Props) => {
 	const [isTokenGated, setIsTokenGated] = React.useState(false);
 	const [selectedToken, setSelectedToken] = React.useState<TokenType>('ERC20');
 	const [selectedChain, setSelectedChain] =
@@ -72,7 +75,6 @@ const AdminDetails = ({ step, setStep }: Props) => {
 				}
 				contentRightStyling={false}
 				size='xl'
-				clearable
 				className='mt-4 max-w-[500px]'
 			/>
 
@@ -105,7 +107,10 @@ const AdminDetails = ({ step, setStep }: Props) => {
 			<Checkbox
 				isSelected={isTokenGated}
 				color='primary'
-				onChange={setIsTokenGated}
+				onChange={(isSelected: boolean) => {
+					setIsTokenGated(isSelected);
+					form.tokenGated = isSelected;
+				}}
 			>
 				Token Gated
 			</Checkbox>
@@ -126,9 +131,10 @@ const AdminDetails = ({ step, setStep }: Props) => {
 									disallowEmptySelection
 									selectionMode='single'
 									selectedKeys={selectedChain}
-									onSelectionChange={(value: any) =>
-										setSelectedChain(value.currentKey)
-									}
+									onSelectionChange={(value: any) => {
+										setSelectedChain(value.currentKey);
+										form.chainType = value.currentKey;
+									}}
 								>
 									<Dropdown.Item key='ETHEREUM'>ETHEREUM</Dropdown.Item>
 									<Dropdown.Item key='POLYGON'>POLYGON</Dropdown.Item>
@@ -147,9 +153,10 @@ const AdminDetails = ({ step, setStep }: Props) => {
 									disallowEmptySelection
 									selectionMode='single'
 									selectedKeys={selectedToken}
-									onSelectionChange={(value: any) =>
-										setSelectedToken(value.currentKey)
-									}
+									onSelectionChange={(value: any) => {
+										setSelectedToken(value.currentKey);
+										form.tokenType = value.currentKey;
+									}}
 								>
 									<Dropdown.Item key='ERC20'>ERC-20</Dropdown.Item>
 									<Dropdown.Item key='ERC721'>ERC-721</Dropdown.Item>
@@ -164,6 +171,7 @@ const AdminDetails = ({ step, setStep }: Props) => {
 							size='xl'
 							clearable
 							className='mt-4 max-w-[450px]'
+							onChange={(e) => (form.tokenAddress = e.target.value)}
 						/>
 						{selectedToken === 'ERC1155' && (
 							<Input
@@ -173,6 +181,7 @@ const AdminDetails = ({ step, setStep }: Props) => {
 								size='xl'
 								clearable
 								className='mt-4 max-w-[450px]'
+								onChange={(e) => (form.tokenId = e.target.value)}
 							/>
 						)}
 					</div>
@@ -203,7 +212,7 @@ const AdminDetails = ({ step, setStep }: Props) => {
 					icon={<Plus set='bold' primaryColor='#fff' size={32} />}
 					size='lg'
 					className='bg-[#0072F5] text-white mt-4 !w-fit'
-					onPress={() => console.log(selectedToken)}
+					onPress={() => console.log(form)}
 				>
 					Create
 				</Button>

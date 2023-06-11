@@ -3,14 +3,17 @@ import { CaretRight } from 'react-iconly';
 import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 
+import { FormProps } from '..';
+
 type CreateFormStepProps = 'basic' | 'settings';
 
 interface Props {
 	step: CreateFormStepProps;
 	setStep: React.Dispatch<React.SetStateAction<CreateFormStepProps>>;
+	form: FormProps;
 }
 
-const BasicDetails = ({ step, setStep }: Props) => {
+const BasicDetails = ({ step, setStep, form }: Props) => {
 	return (
 		<div
 			className={`${inter.className} max-w-screen-md flex flex-col justify-center gap-6`}
@@ -23,6 +26,10 @@ const BasicDetails = ({ step, setStep }: Props) => {
 				size='xl'
 				clearable
 				className='mt-4 max-w-[450px]'
+				initialValue={form.title ? form.title : ''}
+				onChange={(e) => {
+					form.title = e.target.value;
+				}}
 			/>
 			<Textarea
 				label='Meeting Description'
@@ -31,6 +38,10 @@ const BasicDetails = ({ step, setStep }: Props) => {
 				maxRows={10}
 				size='xl'
 				className='mt-4 min-w-[400px]'
+				initialValue={form.description ? form.description : ''}
+				onChange={(e) => {
+					form.description = e.target.value;
+				}}
 			/>
 			<div className='flex flex-col lg:flex-row gap-6'>
 				<Input
@@ -38,16 +49,22 @@ const BasicDetails = ({ step, setStep }: Props) => {
 					type='date'
 					required
 					size='xl'
-					clearable
 					className='mt-4 min-w-[250px]'
+					initialValue={form.date ? form.date : ''}
+					onChange={(e) => {
+						form.date = e.target.value;
+					}}
 				/>
 				<Input
 					label='Start Time (UTC)'
 					type='time'
 					required
 					size='xl'
-					clearable
 					className='mt-4 min-w-[250px]'
+					initialValue={form.startTime ? form.startTime : ''}
+					onChange={(e) => {
+						form.startTime = e.target.value;
+					}}
 				/>
 				<Input
 					label='Duration(in minutes)'
@@ -57,6 +74,10 @@ const BasicDetails = ({ step, setStep }: Props) => {
 					required
 					size='xl'
 					className='mt-4 min-w-[200px]'
+					initialValue={form.duration ? form.duration : ''}
+					onChange={(e) => {
+						form.duration = e.target.value;
+					}}
 				/>
 			</div>
 			<div className='flex justify-end'>
