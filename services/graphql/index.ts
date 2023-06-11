@@ -17,6 +17,7 @@ export const getProfile = async (address: string) => {
 			profile(
 				where: { address: "${address}" }
 			) {
+                address
 				displayName
 				about
 				avatar
@@ -24,34 +25,32 @@ export const getProfile = async (address: string) => {
 		}
 	`;
 	const profile: any = await client.request(query);
-	return profile?.data?.profile;
+	return profile?.profile;
 };
 
-export const createProfile = async ({
-	address,
-	displayName,
-	about,
-	avatar,
-}: ProfileProps) => {
+export const createProfile = async ({ address }: ProfileProps) => {
 	const createProfile = gql`
 		mutation CreateProfile {
 			createProfile(
-				data: { address: "${address}", displayName: "${displayName}", about: "${about}", avatar: "${avatar}" }
+				data: { address: "${address}", displayName: "", about: "", avatar: "" }
 			) {
 				id
 			}
 		}
 	`;
-	const publishProfile = gql`
+	let result;
+	const data = await client.request(createProfile).then(async (res: any) => {
+		const publishProfile = gql`
 		mutation PublishProfile {
-			publishProfile(where: { address: "${address}" })
+			publishProfile(where: { id: "${res?.createProfile?.id}" }) {
+				id
+			}
 		}
 	`;
-
-	const data = await client.request(createProfile);
-	const res: any = await client.request(publishProfile);
-	if (res?.data?.publishProfile?.id) return true;
-	else return false;
+		const data = await client.request(publishProfile);
+		result = data;
+	});
+	return result;
 };
 
 export const updateProfile = async ({
@@ -68,6 +67,9 @@ export const updateProfile = async ({
 			) {
 				id
 			}
+            publishProfile(where: {address: "${address}"}) {
+                id
+            }
 		}
 	`;
 

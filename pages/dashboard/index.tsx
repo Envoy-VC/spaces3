@@ -1,3 +1,5 @@
+import { useAddress } from '@thirdweb-dev/react';
+
 import { Sidebar, NavBar, Profile } from '@/components';
 import Header from '@/components/layout/headers/dashboard';
 
@@ -5,6 +7,7 @@ import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 
 const Dashboard = () => {
+	const address = useAddress();
 	return (
 		<main className={`${inter.className}`}>
 			<NavBar />
@@ -12,7 +15,13 @@ const Dashboard = () => {
 				<Sidebar />
 				<div className='w-full'>
 					<Header />
-					<Profile />
+					{address ? (
+						<Profile />
+					) : (
+						<div className='text-xl font-bold p-12 px-16'>
+							Connect Wallet to Customize Profile
+						</div>
+					)}
 				</div>
 			</div>
 		</main>
