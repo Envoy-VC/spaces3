@@ -1,5 +1,5 @@
 import { Sidebar, NavBar, CreateForm } from '@/components';
-import { Header } from '@/components/layout/headers';
+import Header from '@/components/layout/headers/create-meeting';
 
 import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
