@@ -73,6 +73,6 @@ export const getMeetingDetails = async (meetingId: string) => {
 			},
 		}
 	);
-
-	return response;
+	const res = await response.json();
+	return res;
 };

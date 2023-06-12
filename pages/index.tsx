@@ -10,7 +10,7 @@ export default function Home() {
 	return (
 		<main className={`${inter.className}`}>
 			<NavBar />
-			<div className='flex flex-row justify-between'>
+			<div className='flex flex-row justify-start'>
 				<Sidebar />
 				<Dashboard />
 			</div>

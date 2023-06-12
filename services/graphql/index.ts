@@ -112,11 +112,10 @@ const checkUserExists = async (address: string) => {
 	}
 };
 
-export const updateReminder = async (meetingId: string, address: string) => {
-	const userExists = await checkUserExists(address);
-	if (!userExists) {
-		await createProfile(address);
-	}
+export const checkReminderExists = async (
+	meetingId: string,
+	address: string
+) => {
 	const checkReminder = gql`
 		query CheckReminder {
 			meeting(where: { meetingId: "${meetingId}" }) {
@@ -129,6 +128,16 @@ export const updateReminder = async (meetingId: string, address: string) => {
 
 	const res: any = await client.request(checkReminder);
 	const hasSetReminder = res?.meeting?.profiles?.length > 0;
+	return hasSetReminder;
+};
+
+export const updateReminder = async (meetingId: string, address: string) => {
+	const userExists = await checkUserExists(address);
+	if (!userExists) {
+		await createProfile(address);
+	}
+
+	const hasSetReminder = await checkReminderExists(meetingId, address);
 
 	const addReminder = gql`
 		mutation AddReminder {
@@ -138,6 +147,9 @@ export const updateReminder = async (meetingId: string, address: string) => {
 			) {
 				id
 			}
+			publishMeeting(where: {meetingId: "${meetingId}"}) {
+    			id
+  			}
 		}
 	`;
 
@@ -149,6 +161,9 @@ export const updateReminder = async (meetingId: string, address: string) => {
 			) {
 				id
 			}
+			publishMeeting(where: {meetingId: "${meetingId}"}) {
+    			id
+  			}
 		}
 	`;
 
