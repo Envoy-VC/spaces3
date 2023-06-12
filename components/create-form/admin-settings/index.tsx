@@ -10,6 +10,9 @@ import {
 } from '@nextui-org/react';
 import { CaretLeft, Plus, AddUser, Delete } from 'react-iconly';
 
+import { createMeeting } from '@/services/graphql';
+import { resolveDates, roomJoinParams } from '@/services/utils';
+
 import { HUDDLE_API_KEY } from '@/utils';
 
 import { Inter } from 'next/font/google';
@@ -28,6 +31,7 @@ interface Props {
 }
 
 const AdminDetails = ({ step, setStep, form }: Props) => {
+	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 	const [isTokenGated, setIsTokenGated] = React.useState(false);
 	const [selectedToken, setSelectedToken] = React.useState<TokenType>('ERC20');
 	const [selectedChain, setSelectedChain] =
@@ -51,20 +55,43 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 		setAdminList([...list]);
 	};
 
-	const handleCreateMeeting = async (options: object) => {
-		const response = await fetch(
-			'https://api.huddle01.com/api/v1/create-room',
-			{
-				method: 'POST',
-				...options,
-				headers: {
-					'Content-type': 'application/json',
-					'x-api-key': HUDDLE_API_KEY,
-				},
-			}
-		);
+	const handleCreateMeeting = async () => {
+		try {
+			setIsLoading(true);
+			const { startDate, endDate } = resolveDates(
+				form.date,
+				form.startTime,
+				Number(form.duration)
+			);
 
-		
+			const options = roomJoinParams(
+				form,
+				adminList,
+				isTokenGated,
+				selectedToken,
+				selectedChain
+			);
+
+			const response = await fetch(
+				'https://api.huddle01.com/api/v1/create-room',
+				{
+					method: 'POST',
+					...options,
+					headers: {
+						'Content-type': 'application/json',
+						'x-api-key': HUDDLE_API_KEY,
+					},
+				}
+			);
+
+			const res = await response.json();
+			const meetingId = res?.data?.roomId;
+			const result = await createMeeting({ meetingId, startDate, endDate });
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	return (
@@ -230,7 +257,24 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 					icon={<Plus set='bold' primaryColor='#fff' size={32} />}
 					size='lg'
 					className='bg-[#0072F5] text-white mt-4 !w-fit'
-					onPress={() => console.log(form)}
+					onPress={async () => {
+						if (!adminList.length) {
+							alert('Please add at least one admin');
+							return;
+						} else if (isTokenGated && !form.tokenAddress) {
+							alert('Please add token address');
+							return;
+						} else if (
+							isTokenGated &&
+							form.tokenType === 'ERC1155' &&
+							!form.tokenId
+						) {
+							alert('Please add token id');
+							return;
+						} else {
+							await handleCreateMeeting();
+						}
+					}}
 				>
 					Create
 				</Button>

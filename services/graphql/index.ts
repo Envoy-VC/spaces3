@@ -11,6 +11,12 @@ type ProfileProps = {
 	avatar: string;
 };
 
+type CreateMeetingProps = {
+	meetingId: string;
+	startDate: string;
+	endDate: string;
+};
+
 export const getProfile = async (address: string) => {
 	const query = gql`
 		query GetProfile {
@@ -74,5 +80,20 @@ export const updateProfile = async ({
 	`;
 
 	const res = await client.request(updateProfile);
+	return res;
+};
+
+export const createMeeting = async ({
+	meetingId,
+	startDate,
+	endDate,
+}: CreateMeetingProps) => {
+	const createMeeting = gql`
+		mutation CreateMeeting {
+			createMeeting(data: { meetingId: "${meetingId}", startDate: "${startDate}", endDate: "${endDate}" })
+			publishMeeting(where: { meetingId: "${meetingId}" })
+		}
+	`;
+	const res = await client.request(createMeeting);
 	return res;
 };
