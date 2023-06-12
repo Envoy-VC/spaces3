@@ -1,6 +1,7 @@
 import React from 'react';
 import { Input, Textarea, Avatar, Button, Loading } from '@nextui-org/react';
 import { useAddress, useStorage } from '@thirdweb-dev/react';
+import toast, { Toaster } from 'react-hot-toast';
 import { Edit, Upload } from 'react-iconly';
 
 import { getProfile, createProfile, updateProfile } from '@/services/graphql';
@@ -63,8 +64,10 @@ const Profile = () => {
 				about: profile.about || '',
 				avatar: profile.avatar || '',
 			});
+			toast.success('Profile Updated');
 		} catch (error) {
 			console.log(error);
+			toast.error('Error Updating Profile');
 		} finally {
 			setIsLoading(false);
 		}
@@ -141,6 +144,7 @@ const Profile = () => {
 					{isLoading ? <Loading color='currentColor' size='lg' /> : 'Update'}
 				</Button>
 			</div>
+			<Toaster position='bottom-left' />
 		</div>
 	);
 };

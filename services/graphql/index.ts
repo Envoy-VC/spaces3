@@ -94,7 +94,7 @@ export const createMeeting = async ({
 	return res;
 };
 
-const checkUserExists = async (address: string) => {
+export const checkUserExists = async (address: string) => {
 	const checkUser = gql`
 		query CheckUser {
 			profile(

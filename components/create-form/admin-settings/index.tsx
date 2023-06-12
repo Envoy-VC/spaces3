@@ -10,10 +10,14 @@ import {
 	Loading,
 } from '@nextui-org/react';
 import { CaretLeft, Plus, AddUser, Delete } from 'react-iconly';
+import {
+	createMeeting,
+	checkUserExists,
+	createProfile,
+} from '@/services/graphql';
+import toast, { Toaster } from 'react-hot-toast';
 
-import { createMeeting } from '@/services/graphql';
 import { resolveDates, roomJoinParams } from '@/services/utils';
-
 import { HUDDLE_API_KEY } from '@/utils';
 
 import { Inter } from 'next/font/google';
@@ -59,6 +63,10 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 	const handleCreateMeeting = async () => {
 		try {
 			setIsLoading(true);
+			const userExists = await checkUserExists(adminList[0]);
+			if (!userExists) {
+				const res = await createProfile(adminList[0]);
+			}
 			const { startDate, endDate } = resolveDates(
 				form.date,
 				form.startTime,
@@ -86,16 +94,17 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 			);
 			const res = await response.json();
 			const meetingId = res?.data?.roomId;
-			console.log(meetingId);
-			console.log(options);
+			console.log(res);
 			const result = await createMeeting({
 				meetingId: meetingId,
 				hostName: form.organizer,
 				startDate: startDate,
 				endDate: endDate,
 			});
+			toast.success('Meeting created successfully');
 		} catch (error) {
 			console.log(error);
+			toast.error('Something went wrong');
 		} finally {
 			setIsLoading(false);
 		}
@@ -278,20 +287,20 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 					className='bg-[#0072F5] text-white mt-4 !w-fit'
 					onPress={async () => {
 						if (!form.organizer) {
-							alert('Please add Organizer Name');
+							toast.error('Host Name required');
 							return;
 						} else if (!adminList.length) {
-							alert('Please add at least one admin');
+							toast.error('At least one Admin required');
 							return;
 						} else if (isTokenGated && !form.tokenAddress) {
-							alert('Please add token address');
+							alert('Token Address required');
 							return;
 						} else if (
 							isTokenGated &&
 							form.tokenType === 'ERC1155' &&
 							!form.tokenId
 						) {
-							alert('Please add token id');
+							alert('TokenId required');
 							return;
 						} else {
 							await handleCreateMeeting();
@@ -301,6 +310,7 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 					{isLoading ? <Loading color='currentColor' size='lg' /> : 'Create'}
 				</Button>
 			</div>
+			<Toaster position='bottom-left' />
 		</div>
 	);
 };

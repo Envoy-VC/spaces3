@@ -1,5 +1,7 @@
 import { Input, Textarea, Button } from '@nextui-org/react';
 import { CaretRight } from 'react-iconly';
+import toast, { Toaster } from 'react-hot-toast';
+
 import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 
@@ -86,14 +88,27 @@ const BasicDetails = ({ step, setStep, form }: Props) => {
 					className='bg-[#0072F5] text-white mt-4 !w-fit'
 					type='submit'
 					onPress={() => {
-						if (!form.title || !form.date || !form.startTime)
-							return alert('Please fill all the required fields');
-						setStep('settings');
+						if (!form.title) {
+							toast.error('Meeting title required');
+							return;
+						} else if (!form.date) {
+							toast.error('Meeting date required');
+							return;
+						} else if (!form.startTime) {
+							toast.error('Meeting start time required');
+							return;
+						} else if (!form.duration) {
+							toast.error('Meeting duration required');
+							return;
+						} else {
+							setStep('settings');
+						}
 					}}
 				>
 					Admin Settings
 				</Button>
 			</div>
+			<Toaster position='bottom-left' />
 		</div>
 	);
 };
