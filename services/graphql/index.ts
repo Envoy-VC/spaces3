@@ -13,6 +13,7 @@ type ProfileProps = {
 
 type CreateMeetingProps = {
 	meetingId: string;
+	hostName: string;
 	startDate: string;
 	endDate: string;
 };
@@ -75,12 +76,13 @@ export const updateProfile = async ({
 
 export const createMeeting = async ({
 	meetingId,
+	hostName,
 	startDate,
 	endDate,
 }: CreateMeetingProps) => {
 	const createMeeting = gql`
 		mutation CreateMeeting {
-			createMeeting(data: { meetingId: "${meetingId}", startDate: "${startDate}", endDate: "${endDate}" }) {
+			createMeeting(data: { meetingId: "${meetingId}", host: "${hostName}", startDate: "${startDate}", endDate: "${endDate}" }) {
 				id
 			}
 			publishMeeting(where: { meetingId: "${meetingId}" }) {
@@ -157,4 +159,25 @@ export const updateReminder = async (meetingId: string, address: string) => {
 		const res = await client.request(addReminder);
 		return res;
 	}
+};
+
+export const getCurrentMeetings = async () => {
+	const currentTimestamp = new Date().toISOString();
+
+	const getCurrentMeetings = gql`
+		query MyQuery {
+			meetings(where: { endDate_gte: "${currentTimestamp}" }) {
+				meetingId
+				host
+				profiles {
+					address
+					displayName
+					avatar
+				}
+			}
+		}
+	`;
+
+	const res: any = await client.request(getCurrentMeetings);
+	return res?.meetings;
 };

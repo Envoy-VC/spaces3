@@ -1,5 +1,6 @@
 import { FormProps } from '@/components/create-form';
 import { TokenType, ChainType } from '@/components/create-form/admin-settings';
+import { HUDDLE_API_KEY } from '@/utils';
 
 export const resolveDates = (date: string, time: string, duration: number) => {
 	const [year, month, day] = date.split('-');
@@ -59,4 +60,19 @@ export const roomJoinParams = (
 		};
 		return erc1155Options;
 	}
+};
+
+export const getMeetingDetails = async (meetingId: string) => {
+	const response = await fetch(
+		`https://api.huddle01.com/api/v1/meeting-details/${meetingId}`,
+		{
+			method: 'GET',
+			headers: {
+				'Content-type': 'application/json',
+				'x-api-key': HUDDLE_API_KEY,
+			},
+		}
+	);
+
+	return response;
 };
