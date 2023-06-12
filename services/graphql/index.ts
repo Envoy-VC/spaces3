@@ -34,28 +34,18 @@ export const getProfile = async (address: string) => {
 	return profile?.profile;
 };
 
-export const createProfile = async ({ address }: ProfileProps) => {
+export const createProfile = async (address: string) => {
 	const createProfile = gql`
 		mutation CreateProfile {
-			createProfile(
-				data: { address: "${address}", displayName: "", about: "", avatar: "" }
-			) {
-				id
-			}
+  			createProfile(data: {address: "${address}", displayName: "", about: "", avatar: ""}) {
+    			id
+  			}
+  			publishProfile(where: {address: "${address}"}) {
+    			id
+  			}
 		}
 	`;
-	let result;
-	const data = await client.request(createProfile).then(async (res: any) => {
-		const publishProfile = gql`
-		mutation PublishProfile {
-			publishProfile(where: { id: "${res?.createProfile?.id}" }) {
-				id
-			}
-		}
-	`;
-		const data = await client.request(publishProfile);
-		result = data;
-	});
+	const result = await client.request(createProfile);
 	return result;
 };
 
@@ -100,4 +90,71 @@ export const createMeeting = async ({
 	`;
 	const res = await client.request(createMeeting);
 	return res;
+};
+
+const checkUserExists = async (address: string) => {
+	const checkUser = gql`
+		query CheckUser {
+			profile(
+				where: { address: "${address}" }
+			) {
+				id
+			}
+		}
+	`;
+	const res: any = await client.request(checkUser);
+	if (res?.profile === null) {
+		return false;
+	} else {
+		return true;
+	}
+};
+
+export const updateReminder = async (meetingId: string, address: string) => {
+	const userExists = await checkUserExists(address);
+	if (!userExists) {
+		await createProfile(address);
+	}
+	const checkReminder = gql`
+		query CheckReminder {
+			meeting(where: { meetingId: "${meetingId}" }) {
+				profiles(where: { address: "${address}" }) {
+					id
+				}
+			}
+		}
+	`;
+
+	const res: any = await client.request(checkReminder);
+	const hasSetReminder = res?.meeting?.profiles?.length > 0;
+
+	const addReminder = gql`
+		mutation AddReminder {
+			updateMeeting(
+				data: { profiles: { connect: { where: { address: "${address}" } } } }
+				where: { meetingId: "${meetingId}" }
+			) {
+				id
+			}
+		}
+	`;
+
+	const removeReminder = gql`
+		mutation RemoveReminder {
+			updateMeeting(
+				data: { profiles: { disconnect: { address: "${address}" } } }
+				where: { meetingId: "${meetingId}" }
+			) {
+				id
+			}
+		}
+	`;
+
+	if (hasSetReminder) {
+		const res = await client.request(removeReminder);
+		return res;
+	} else {
+		const res = await client.request(addReminder);
+		return res;
+	}
 };

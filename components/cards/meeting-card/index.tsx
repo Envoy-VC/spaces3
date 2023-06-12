@@ -1,5 +1,5 @@
 import { Card, Avatar, Button } from '@nextui-org/react';
-import { ArrowRight } from 'react-iconly';
+import { ArrowRight, Notification } from 'react-iconly';
 
 import { Inter } from 'next/font/google';
 
@@ -22,19 +22,22 @@ const MeetingCard = () => {
 			className='border-gray-800 border-2 outline-none meeting-card'
 		>
 			<Card.Header>
-				<div className='flex justify-start items-center'>
-					<Avatar
-						src='https://i.pravatar.cc/150?u=a042581f4e29026704d'
-						bordered
-						color='primary'
-						size='lg'
-					/>
-					<div
-						className={`${inter.className} flex flex-col text-md ml-2 justify-start`}
-					>
-						<div className='font-semibold'>Vedant Chainani</div>
-						<div className='text-[#bdbdbd]'>Organizer</div>
+				<div className='w-full flex justify-between items-center'>
+					<div className='flex flex-row'>
+						<Avatar
+							src='https://i.pravatar.cc/150?u=a042581f4e29026704d'
+							bordered
+							color='primary'
+							size='lg'
+						/>
+						<div
+							className={`${inter.className} flex flex-col text-md ml-2 justify-start`}
+						>
+							<div className='font-semibold'>Vedant Chainani</div>
+							<div className='text-[#bdbdbd]'>Organizer</div>
+						</div>
 					</div>
+					<Notification set='light' primaryColor='#fff' size={32} />
 				</div>
 			</Card.Header>
 			<Card.Body>
