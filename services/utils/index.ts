@@ -10,11 +10,11 @@ export const resolveDates = (date: string, time: string, duration: number) => {
 		+month - 1,
 		+day,
 		+hour,
-		+(minute + 60),
+		+minute,
 		+'00'
 	).toISOString();
 	const endDate = new Date(
-		new Date(startDate).getTime() + duration * 60
+		new Date(startDate).getTime() + duration * 60 * 1000
 	).toISOString();
 
 	return { startDate, endDate };

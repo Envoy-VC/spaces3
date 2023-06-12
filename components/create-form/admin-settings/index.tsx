@@ -7,6 +7,7 @@ import {
 	Dropdown,
 	Image,
 	Card,
+	Loading,
 } from '@nextui-org/react';
 import { CaretLeft, Plus, AddUser, Delete } from 'react-iconly';
 
@@ -76,17 +77,22 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 				'https://api.huddle01.com/api/v1/create-room',
 				{
 					method: 'POST',
-					...options,
+					body: JSON.stringify(options),
 					headers: {
 						'Content-type': 'application/json',
 						'x-api-key': HUDDLE_API_KEY,
 					},
 				}
 			);
-
 			const res = await response.json();
 			const meetingId = res?.data?.roomId;
-			const result = await createMeeting({ meetingId, startDate, endDate });
+			console.log(meetingId);
+			console.log(options);
+			const result = await createMeeting({
+				meetingId: meetingId,
+				startDate: startDate,
+				endDate: endDate,
+			});
 		} catch (error) {
 			console.log(error);
 		} finally {
@@ -254,6 +260,7 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 				<Button
 					auto
 					light
+					disabled={isLoading}
 					icon={<Plus set='bold' primaryColor='#fff' size={32} />}
 					size='lg'
 					className='bg-[#0072F5] text-white mt-4 !w-fit'
@@ -276,7 +283,7 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 						}
 					}}
 				>
-					Create
+					{isLoading ? <Loading color='currentColor' size='lg' /> : 'Create'}
 				</Button>
 			</div>
 		</div>

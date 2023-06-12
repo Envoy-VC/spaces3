@@ -90,8 +90,12 @@ export const createMeeting = async ({
 }: CreateMeetingProps) => {
 	const createMeeting = gql`
 		mutation CreateMeeting {
-			createMeeting(data: { meetingId: "${meetingId}", startDate: "${startDate}", endDate: "${endDate}" })
-			publishMeeting(where: { meetingId: "${meetingId}" })
+			createMeeting(data: { meetingId: "${meetingId}", startDate: "${startDate}", endDate: "${endDate}" }) {
+				id
+			}
+			publishMeeting(where: { meetingId: "${meetingId}" }) {
+				id
+			}
 		}
 	`;
 	const res = await client.request(createMeeting);
