@@ -90,6 +90,7 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 			console.log(options);
 			const result = await createMeeting({
 				meetingId: meetingId,
+				hostName: form.organizer,
 				startDate: startDate,
 				endDate: endDate,
 			});
@@ -107,6 +108,17 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 			<div className=' text-4xl font-bold mb-16 text-center'>
 				Admin Settings
 			</div>
+			<Input
+				label='Host Name*'
+				placeholder='Richard Hendricks'
+				size='xl'
+				clearable
+				className='mt-4 max-w-[450px]'
+				initialValue={form.organizer ? form.organizer : ''}
+				onChange={(e) => {
+					form.organizer = e.target.value;
+				}}
+			/>
 			<Input
 				label='Admins'
 				placeholder='0xBF4...3e1'
@@ -265,7 +277,10 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 					size='lg'
 					className='bg-[#0072F5] text-white mt-4 !w-fit'
 					onPress={async () => {
-						if (!adminList.length) {
+						if (!form.organizer) {
+							alert('Please add Organizer Name');
+							return;
+						} else if (!adminList.length) {
 							alert('Please add at least one admin');
 							return;
 						} else if (isTokenGated && !form.tokenAddress) {

@@ -13,6 +13,7 @@ export interface FormProps {
 	date: string;
 	startTime: string;
 	duration: string;
+	organizer: string;
 	hosts: string[];
 	tokenGated: boolean;
 	tokenType?: TokenType;
@@ -28,6 +29,7 @@ const CreateForm = () => {
 		date: '',
 		startTime: '',
 		duration: '60',
+		organizer: '',
 		hosts: [],
 		tokenGated: false,
 	});
