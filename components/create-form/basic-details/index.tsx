@@ -54,7 +54,7 @@ const BasicDetails = ({ step, setStep, form }: Props) => {
 					}}
 				/>
 				<Input
-					label='Start Time (UTC)*'
+					label='Start Time*'
 					type='time'
 					required
 					size='xl'
@@ -65,7 +65,7 @@ const BasicDetails = ({ step, setStep, form }: Props) => {
 					}}
 				/>
 				<Input
-					label='Duration(in minutes)'
+					label='Duration(minutes)'
 					placeholder='60'
 					step={10}
 					type='number'

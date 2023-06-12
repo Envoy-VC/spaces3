@@ -1,14 +1,15 @@
 import React from 'react';
 
 import { Button } from '@nextui-org/react';
+import { useRouter } from 'next/navigation';
 import { Plus } from 'react-iconly';
 import CustomConnectButton from '../custom-connect';
 
 import { Inter } from 'next/font/google';
-
 const inter = Inter({ subsets: ['latin'] });
 
 const Header = () => {
+	const router = useRouter();
 	return (
 		<div
 			className={`${inter.className} flex flex-col sm:flex-row justify-between items-center p-12 px-16`}
@@ -24,6 +25,7 @@ const Header = () => {
 					className='bg-[#0072F5]'
 					size='lg'
 					auto
+					onPress={() => router.push('/create')}
 				>
 					CREATE MEETING
 				</Button>

@@ -24,13 +24,13 @@ const Sidebar = () => {
 		{
 			name: 'join',
 			content: 'Join Meeting',
-			icon: <Plus set='bold' primaryColor='#E0E1E2' size={32} />,
+			icon: <Video set='bold' primaryColor='#E0E1E2' size={32} />,
 			link: '/join',
 		},
 		{
 			name: 'create',
 			content: 'Create Meetings',
-			icon: <Video set='bold' primaryColor='#E0E1E2' size={32} />,
+			icon: <Plus set='bold' primaryColor='#E0E1E2' size={32} />,
 			link: '/create',
 		},
 		{
