@@ -27,7 +27,7 @@ const CreateForm = () => {
 		title: '',
 		date: '',
 		startTime: '',
-		duration: '',
+		duration: '60',
 		hosts: [],
 		tokenGated: false,
 	});

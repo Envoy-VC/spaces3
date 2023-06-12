@@ -20,9 +20,8 @@ const BasicDetails = ({ step, setStep, form }: Props) => {
 		>
 			<div className='text-4xl font-bold mb-16 text-center'>Basic Details</div>
 			<Input
-				label='Meeting Title'
+				label='Meeting Title*'
 				placeholder='Onboarding Meeting'
-				required
 				size='xl'
 				clearable
 				className='mt-4 max-w-[450px]'
@@ -45,9 +44,8 @@ const BasicDetails = ({ step, setStep, form }: Props) => {
 			/>
 			<div className='flex flex-col lg:flex-row gap-6'>
 				<Input
-					label='Date'
+					label='Date*'
 					type='date'
-					required
 					size='xl'
 					className='mt-4 min-w-[250px]'
 					initialValue={form.date ? form.date : ''}
@@ -56,7 +54,7 @@ const BasicDetails = ({ step, setStep, form }: Props) => {
 					}}
 				/>
 				<Input
-					label='Start Time (UTC)'
+					label='Start Time (UTC)*'
 					type='time'
 					required
 					size='xl'
@@ -71,7 +69,6 @@ const BasicDetails = ({ step, setStep, form }: Props) => {
 					placeholder='60'
 					step={10}
 					type='number'
-					required
 					size='xl'
 					className='mt-4 min-w-[200px]'
 					initialValue={form.duration ? form.duration : ''}
@@ -87,7 +84,12 @@ const BasicDetails = ({ step, setStep, form }: Props) => {
 					iconRight={<CaretRight set='bold' primaryColor='#fff' size={32} />}
 					size='lg'
 					className='bg-[#0072F5] text-white mt-4 !w-fit'
-					onPress={() => setStep('settings')}
+					type='submit'
+					onPress={() => {
+						if (!form.title || !form.date || !form.startTime)
+							return alert('Please fill all the required fields');
+						setStep('settings');
+					}}
 				>
 					Admin Settings
 				</Button>

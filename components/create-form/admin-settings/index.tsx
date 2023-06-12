@@ -10,14 +10,16 @@ import {
 } from '@nextui-org/react';
 import { CaretLeft, Plus, AddUser, Delete } from 'react-iconly';
 
+import { HUDDLE_API_KEY } from '@/utils';
+
 import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 
 import { FormProps } from '..';
 
 type CreateFormStepProps = 'basic' | 'settings';
-type TokenType = 'ERC20' | 'ERC721' | 'ERC1155';
-type ChainType = 'ETHEREUM' | 'POLYGON';
+export type TokenType = 'ERC20' | 'ERC721' | 'ERC1155';
+export type ChainType = 'ETHEREUM' | 'POLYGON';
 
 interface Props {
 	step: CreateFormStepProps;
@@ -47,6 +49,22 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 		const list = adminList;
 		list.splice(index, 1);
 		setAdminList([...list]);
+	};
+
+	const handleCreateMeeting = async (options: object) => {
+		const response = await fetch(
+			'https://api.huddle01.com/api/v1/create-room',
+			{
+				method: 'POST',
+				...options,
+				headers: {
+					'Content-type': 'application/json',
+					'x-api-key': HUDDLE_API_KEY,
+				},
+			}
+		);
+
+		
 	};
 
 	return (
