@@ -1,6 +1,7 @@
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 
+import React from 'react';
 import { createTheme, NextUIProvider } from '@nextui-org/react';
 
 import {
@@ -10,13 +11,22 @@ import {
 	localWallet,
 } from '@thirdweb-dev/react';
 
-import { WALLET_CONNECT_ID } from '@/utils';
+import { useHuddle01 } from '@huddle01/react';
+
+import { WALLET_CONNECT_ID, HUDDLE_PROJECT_ID } from '@/utils';
 
 const darkTheme = createTheme({
 	type: 'dark',
 });
 
 export default function App({ Component, pageProps }: AppProps) {
+	const { initialize, isInitialized } = useHuddle01();
+
+	// Initialize Huddle01
+	React.useEffect(() => {
+		initialize(HUDDLE_PROJECT_ID);
+	}, []);
+
 	return (
 		<ThirdwebProvider
 			supportedWallets={[
@@ -26,7 +36,7 @@ export default function App({ Component, pageProps }: AppProps) {
 			]}
 		>
 			<NextUIProvider theme={darkTheme}>
-				<Component {...pageProps} />
+				{isInitialized && <Component {...pageProps} />}
 			</NextUIProvider>
 		</ThirdwebProvider>
 	);
