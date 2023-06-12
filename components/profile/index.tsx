@@ -26,12 +26,7 @@ const Profile = () => {
 		async function fetchProfile() {
 			const profile = await getProfile(address!);
 			if (!profile) {
-				const res = await createProfile({
-					address,
-					displayName: '',
-					about: '',
-					avatar: '',
-				});
+				const res = await createProfile(address!);
 				const newProfile = await getProfile(address!);
 				setProfile(newProfile);
 				return;
