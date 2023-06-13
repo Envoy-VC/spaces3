@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { Card, Avatar, Button } from '@nextui-org/react';
 import { ArrowRight, Notification } from 'react-iconly';
 import { useAddress } from '@thirdweb-dev/react';
@@ -18,6 +19,7 @@ const MeetingCard = ({
 }: MeetingDetails) => {
 	const address = useAddress();
 	const [reminderExists, setReminderExists] = React.useState<boolean>(false);
+	const router = useRouter();
 
 	// Fetch if Reminder Exists
 	React.useEffect(() => {
@@ -104,6 +106,12 @@ const MeetingCard = ({
 						auto
 						iconRight={<ArrowRight set='bold' primaryColor='#0072F5' />}
 						className='text-md text-semibold'
+						onPress={() => {
+							router.push({
+								pathname: '/join',
+								query: { meetingId: meetingId },
+							});
+						}}
 					>
 						Join Meeting
 					</Button>

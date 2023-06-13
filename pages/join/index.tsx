@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 import toast, { Toaster } from 'react-hot-toast';
 
 import { Input, Button } from '@nextui-org/react';
@@ -11,8 +11,11 @@ import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 
 const Join = () => {
-	const [meetingId, setMeetingId] = React.useState<string>('');
 	const router = useRouter();
+	const { meetingId: meetingIdQuery } = router?.query;
+	const [meetingId, setMeetingId] = React.useState<string>(
+		meetingIdQuery as string
+	);
 
 	const handleJoinMeeting = () => {
 		if (!meetingId) {
@@ -31,6 +34,7 @@ const Join = () => {
 					<div className='flex flex-col gap-8 items-center mt-16'>
 						<Input
 							placeholder='Meeting ID'
+							initialValue={meetingIdQuery as string}
 							size='xl'
 							clearable
 							className='mt-4 max-w-[450px]'

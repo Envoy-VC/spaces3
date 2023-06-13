@@ -76,3 +76,35 @@ export const getMeetingDetails = async (meetingId: string) => {
 	const res = await response.json();
 	return res;
 };
+
+export const getJoinRoomToken = async ({
+	meetingId,
+	address,
+}: {
+	meetingId: string;
+	address: string;
+}) => {
+	let userType = 'guest';
+	const meetingDetails: any = await getMeetingDetails(meetingId);
+	if (meetingDetails.hostWalletAddress.includes(address)) {
+		userType = 'host';
+	}
+	const options = {
+		roomId: meetingId,
+		userType: userType,
+	};
+
+	const response = await fetch(
+		'https://api.huddle01.com/api/v1/join-room-token',
+		{
+			method: 'POST',
+			body: JSON.stringify(options),
+			headers: {
+				'Content-type': 'application/json',
+				'x-api-key': HUDDLE_API_KEY,
+			},
+		}
+	);
+	const res = await response.json();
+	return res;
+};
