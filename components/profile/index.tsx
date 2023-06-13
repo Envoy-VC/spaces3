@@ -42,12 +42,10 @@ const Profile = () => {
 			setIsLoading(true);
 			const file = e.target.files![0];
 			const uri = await storage!.upload(file, { uploadWithoutDirectory: true });
-			console.log(uri);
 			setProfile({
 				...profile,
 				avatar: 'https://ipfs.io/ipfs/' + uri.split('ipfs://')[1],
 			});
-			console.log(profile);
 		} catch (error) {
 			console.log(error);
 		} finally {
@@ -119,7 +117,6 @@ const Profile = () => {
 						className='bg-[#0072F5] text-white mt-4 !max-w-[200px]'
 						auto
 					>
-						{' '}
 						<input
 							type='file'
 							className='max-w-[200px]'
@@ -141,7 +138,7 @@ const Profile = () => {
 					disabled={isLoading}
 					onPress={() => handleUpdate()}
 				>
-					{isLoading ? <Loading color='currentColor' size='lg' /> : 'Update'}
+					{isLoading ? <Loading color='currentColor' size='md' /> : 'Update'}
 				</Button>
 			</div>
 			<Toaster position='bottom-left' />
