@@ -1,6 +1,11 @@
 import React from 'react';
+
 import { useRouter } from 'next/router';
+import { useLobby } from '@huddle01/react/hooks';
+import { useAddress } from '@thirdweb-dev/react';
 import toast, { Toaster } from 'react-hot-toast';
+
+import { getJoinRoomToken } from '@/services/utils';
 
 import { Input, Button } from '@nextui-org/react';
 import { ArrowRight } from 'react-iconly';
@@ -11,18 +16,30 @@ import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 
 const Join = () => {
+	const address = useAddress();
 	const router = useRouter();
 	const { meetingId: meetingIdQuery } = router?.query;
+
 	const [meetingId, setMeetingId] = React.useState<string>(
 		meetingIdQuery as string
 	);
 
-	const handleJoinMeeting = () => {
+	const { joinLobby } = useLobby();
+
+	const handleJoinMeeting = async () => {
 		if (!meetingId) {
 			toast.error('Meeting ID cannot be empty');
 			return;
+		} else if (!address) {
+			toast.error('Please connect your wallet');
+			return;
+		} else {
+			const res: any = await getJoinRoomToken({
+				address: address,
+				meetingId: meetingId,
+			});
+			joinLobby(meetingId, res?.token);
 		}
-		router.push(`/join/${meetingId}`);
 	};
 	return (
 		<main className={`${inter.className}`}>
@@ -31,8 +48,10 @@ const Join = () => {
 				<Sidebar />
 				<div className='w-full'>
 					<Header />
+
 					<div className='flex flex-col gap-8 items-center mt-16'>
 						<Input
+							aria-label='Meeting ID'
 							placeholder='Meeting ID'
 							initialValue={meetingIdQuery as string}
 							size='xl'
@@ -47,6 +66,7 @@ const Join = () => {
 								<ArrowRight set='bold' primaryColor='#fff' size={32} />
 							}
 							size='lg'
+							disabled={joinLobby.isCallable}
 							className='bg-[#0072F5] text-white mt-4 !w-fit'
 							onPress={() => handleJoinMeeting()}
 						>

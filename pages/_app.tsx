@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app';
 
 import React from 'react';
 import { createTheme, NextUIProvider } from '@nextui-org/react';
+import { useHuddle01 } from '@huddle01/react';
 
 import {
 	ThirdwebProvider,
@@ -11,8 +12,6 @@ import {
 	localWallet,
 } from '@thirdweb-dev/react';
 
-import { useHuddle01 } from '@huddle01/react';
-
 import { WALLET_CONNECT_ID, HUDDLE_PROJECT_ID } from '@/utils';
 
 const darkTheme = createTheme({
@@ -20,7 +19,7 @@ const darkTheme = createTheme({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
-	const { initialize, isInitialized } = useHuddle01();
+	const { initialize } = useHuddle01();
 
 	// Initialize Huddle01
 	React.useEffect(() => {
@@ -36,7 +35,7 @@ export default function App({ Component, pageProps }: AppProps) {
 			]}
 		>
 			<NextUIProvider theme={darkTheme}>
-				{isInitialized && <Component {...pageProps} />}
+				<Component {...pageProps} />
 			</NextUIProvider>
 		</ThirdwebProvider>
 	);
