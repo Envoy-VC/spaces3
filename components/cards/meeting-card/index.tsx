@@ -107,10 +107,7 @@ const MeetingCard = ({
 						iconRight={<ArrowRight set='bold' primaryColor='#0072F5' />}
 						className='text-md text-semibold'
 						onPress={() => {
-							router.push({
-								pathname: '/join',
-								query: { meetingId: meetingId },
-							});
+							router.push(`/lobby/${meetingId}`);
 						}}
 					>
 						Join Meeting
