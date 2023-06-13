@@ -1,14 +1,11 @@
 import React from 'react';
-
 import { useRouter } from 'next/router';
-import { useLobby } from '@huddle01/react/hooks';
 import { useAddress } from '@thirdweb-dev/react';
-import toast, { Toaster } from 'react-hot-toast';
-
-import { getJoinRoomToken } from '@/services/utils';
 
 import { Input, Button } from '@nextui-org/react';
+import toast, { Toaster } from 'react-hot-toast';
 import { ArrowRight } from 'react-iconly';
+
 import { Sidebar, NavBar } from '@/components';
 import { Header } from '@/components';
 
@@ -24,8 +21,6 @@ const Join = () => {
 		meetingIdQuery as string
 	);
 
-	const { joinLobby } = useLobby();
-
 	const handleJoinMeeting = async () => {
 		if (!meetingId) {
 			toast.error('Meeting ID cannot be empty');
@@ -34,11 +29,7 @@ const Join = () => {
 			toast.error('Please connect your wallet');
 			return;
 		} else {
-			const res: any = await getJoinRoomToken({
-				address: address,
-				meetingId: meetingId,
-			});
-			joinLobby(meetingId, res?.token);
+			router.push(`/lobby/${meetingId}`);
 		}
 	};
 	return (
@@ -51,15 +42,15 @@ const Join = () => {
 						headline='Join Meeting 🎥'
 						tagline='Secure, private, and decentralized'
 					/>
-
-					<div className='flex flex-col gap-8 items-center mt-16'>
+					<div className='flex flex-col md:flex-row w-fit mx-auto mt-16'>
 						<Input
 							aria-label='Meeting ID'
-							placeholder='Meeting ID'
+							label='Meeting ID'
+							placeholder='Enter Meeting ID'
 							initialValue={meetingIdQuery as string}
 							size='xl'
 							clearable
-							className='mt-4 max-w-[450px]'
+							className='mt-2 min-w-[400px]'
 							onChange={(e) => setMeetingId(e.target.value)}
 						/>
 						<Button
@@ -69,8 +60,7 @@ const Join = () => {
 								<ArrowRight set='bold' primaryColor='#fff' size={32} />
 							}
 							size='lg'
-							disabled={!joinLobby.isCallable}
-							className='bg-[#0072F5] text-white mt-4 !w-fit'
+							className='bg-[#0072F5] text-white !w-fit mt-[44px] mx-0 md:mx-4'
 							onPress={() => handleJoinMeeting()}
 						>
 							Join
