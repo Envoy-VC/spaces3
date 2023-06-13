@@ -10,7 +10,7 @@ import { getJoinRoomToken } from '@/services/utils';
 import { Input, Button } from '@nextui-org/react';
 import { ArrowRight } from 'react-iconly';
 import { Sidebar, NavBar } from '@/components';
-import Header from '@/components/layout/headers/join-meeting';
+import { Header } from '@/components';
 
 import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
@@ -47,7 +47,10 @@ const Join = () => {
 			<div className='flex flex-row justify-start'>
 				<Sidebar />
 				<div className='w-full'>
-					<Header />
+					<Header
+						headline='Join Meeting 🎥'
+						tagline='Secure, private, and decentralized'
+					/>
 
 					<div className='flex flex-col gap-8 items-center mt-16'>
 						<Input
@@ -66,7 +69,7 @@ const Join = () => {
 								<ArrowRight set='bold' primaryColor='#fff' size={32} />
 							}
 							size='lg'
-							disabled={joinLobby.isCallable}
+							disabled={!joinLobby.isCallable}
 							className='bg-[#0072F5] text-white mt-4 !w-fit'
 							onPress={() => handleJoinMeeting()}
 						>

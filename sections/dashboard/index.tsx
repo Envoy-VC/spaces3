@@ -56,7 +56,11 @@ const Dashboard = () => {
 
 	return (
 		<div className='grow'>
-			<Header />
+			<Header
+				headline='Hi Vedant👋'
+				tagline='Let&lsquo;s get started for today!'
+				isDashboard
+			/>
 			<div className='flex flex-row w-fit flex-wrap justify-start gap-8 px-8 mt-8'>
 				{meetings.map((meeting, index: number) => (
 					<MeetingCard key={index} {...meeting} />

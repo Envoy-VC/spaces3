@@ -6,7 +6,11 @@ import { Tabs } from '../sidebar';
 
 type TabTypes = Tabs | 'logout';
 
-const CustomConnectButton = () => {
+interface Props {
+	avatar?: string;
+}
+
+const CustomConnectButton = ({ avatar }: Props) => {
 	const address = useAddress();
 	const disconnect = useDisconnect();
 	const router = useRouter();
@@ -37,7 +41,7 @@ const CustomConnectButton = () => {
 							as='button'
 							color='secondary'
 							size='lg'
-							src='https://i.pravatar.cc/150?u=a042581f4e29026704d'
+							src={avatar || 'https://i.pravatar.cc/150?u=a042581f4e29026704d'}
 						/>
 					</Dropdown.Trigger>
 					<Dropdown.Menu

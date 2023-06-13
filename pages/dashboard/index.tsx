@@ -1,7 +1,7 @@
 import { useAddress } from '@thirdweb-dev/react';
 
 import { Sidebar, NavBar, Profile } from '@/components';
-import Header from '@/components/layout/headers/dashboard';
+import { Header } from '@/components';
 
 import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
@@ -14,7 +14,10 @@ const Dashboard = () => {
 			<div className='flex flex-row justify-between'>
 				<Sidebar />
 				<div className='w-full'>
-					<Header />
+					<Header
+						headline='Edit Profile 👤'
+						tagline='Personalize your virtual presence'
+					/>
 					{address ? (
 						<Profile />
 					) : (

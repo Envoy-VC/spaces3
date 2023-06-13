@@ -9,11 +9,11 @@ import { getProfile, createProfile, updateProfile } from '@/services/graphql';
 import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 
-interface ProfileProps {
+export type ProfileProps = {
 	displayName?: string;
 	about?: string;
 	avatar?: string;
-}
+};
 
 const Profile = () => {
 	const address = useAddress();
