@@ -1,19 +1,32 @@
+import React from 'react';
 import { ConnectWallet, useAddress, useDisconnect } from '@thirdweb-dev/react';
 import { Dropdown, Avatar } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
+import { getProfile } from '@/services/graphql';
+
+import { ProfileProps } from '../profile';
 
 import { Tabs } from '../sidebar';
 
 type TabTypes = Tabs | 'logout';
 
-interface Props {
-	avatar?: string;
-}
-
-const CustomConnectButton = ({ avatar }: Props) => {
+const CustomConnectButton = () => {
 	const address = useAddress();
 	const disconnect = useDisconnect();
 	const router = useRouter();
+	const [userDetails, setUserDetails] = React.useState<ProfileProps>({});
+
+	React.useEffect(() => {
+		async function fetchProfile() {
+			if (address) {
+				const profile = await getProfile(address);
+				console.log(profile);
+				setUserDetails(profile);
+			}
+		}
+		fetchProfile();
+	}, [address]);
+
 	const handleAction = (key: TabTypes) => {
 		if (key === 'logout') {
 			disconnect();
@@ -41,7 +54,10 @@ const CustomConnectButton = ({ avatar }: Props) => {
 							as='button'
 							color='secondary'
 							size='lg'
-							src={avatar || 'https://i.pravatar.cc/150?u=a042581f4e29026704d'}
+							src={
+								userDetails.avatar ||
+								'https://i.pravatar.cc/150?u=a042581f4e29026704d'
+							}
 						/>
 					</Dropdown.Trigger>
 					<Dropdown.Menu

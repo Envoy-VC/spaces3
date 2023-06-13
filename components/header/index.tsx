@@ -31,7 +31,9 @@ const Header = ({ headline, tagline, isDashboard }: Props) => {
 				setUserDetails(profile);
 			}
 		}
-		fetchProfile();
+		if (isDashboard) {
+			fetchProfile();
+		}
 	}, [address]);
 
 	return (
@@ -58,7 +60,7 @@ const Header = ({ headline, tagline, isDashboard }: Props) => {
 				>
 					CREATE MEETING
 				</Button>
-				<CustomConnectButton avatar={userDetails.avatar} />
+				<CustomConnectButton />
 			</div>
 		</div>
 	);
