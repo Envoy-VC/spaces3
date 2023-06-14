@@ -6,6 +6,7 @@ import CreateForm from './create-form';
 import Profile from './profile';
 import LobbyControls from './lobby-controls';
 import MeetingControls from './meeting-controls';
+import MeetingHeader from './meeting-header';
 
 export {
 	Sidebar,
@@ -16,4 +17,5 @@ export {
 	Profile,
 	LobbyControls,
 	MeetingControls,
+	MeetingHeader,
 };
