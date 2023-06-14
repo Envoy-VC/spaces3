@@ -5,6 +5,7 @@ import CustomConnectButton from './custom-connect';
 import CreateForm from './create-form';
 import Profile from './profile';
 import LobbyControls from './lobby-controls';
+import MeetingControls from './meeting-controls';
 
 export {
 	Sidebar,
@@ -14,4 +15,5 @@ export {
 	CreateForm,
 	Profile,
 	LobbyControls,
+	MeetingControls,
 };

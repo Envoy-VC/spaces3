@@ -2,6 +2,7 @@ import React from 'react';
 import { Image } from '@nextui-org/react';
 import toast, { Toaster } from 'react-hot-toast';
 
+import { MeetingControls } from '@/components';
 import { UserMeetingCard } from '@/components/cards';
 import logo from '@/public/logo.png';
 
@@ -28,8 +29,8 @@ const Meeting = () => {
 				</div>
 				<div className='hidden xl:flex xl:basis-1/3 border-2'>Chat</div>
 			</div>
-			<div className='max-w-screen-sm w-full mx-auto mt-8 p-4 border-2'>
-				controls
+			<div className='max-w-screen-sm w-full mx-auto mt-8 p-4'>
+				<MeetingControls />
 			</div>
 			<Toaster position='bottom-left' />
 		</main>
