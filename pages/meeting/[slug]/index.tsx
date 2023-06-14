@@ -65,16 +65,11 @@ const Meeting = () => {
 						<div className='basis-[100%] xl:basis-2/3 overflow-scroll no-scrollbar'>
 							<div className='flex flex-row flex-wrap justify-evenly gap-8'>
 								<UserMeetingCard peerId={state?.context.peerId} />
-								<Audio
-									peerId={state?.context.peerId}
-									track={stream?.getAudioTracks().at(0)}
-									debug
-								/>
 								{Object.values(peers)
 									.filter((peer) => peer.peerId)
 									.map((peer, index) => (
 										<div key={index}>
-											<Audio peerId={peer.peerId} debug />
+											<Audio peerId={peer.peerId} />
 											<UserMeetingCard {...peer} />
 										</div>
 									))}
