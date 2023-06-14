@@ -37,19 +37,19 @@ const LobbyCard = () => {
 				<Image
 					src={
 						profile.avatar ||
-						'https://ipfs.io/ipfs/Qmdzfe9YjZx6pEodbeiUiunPoka1cCEQvhEyWYiQJt65SL'
+						'https://geekculture.co/wp-content/uploads/2018/03/silicon-valley-s5-intro-feature.jpg'
 					}
 					alt='Profile Image'
 					className='absolute !w-full !h-full object-cover scale-[130%] overflow-hidden blur-sm saturate-150'
 				/>
 				<Avatar
-					src={
-						profile.avatar ||
-						'https://ipfs.io/ipfs/Qmdzfe9YjZx6pEodbeiUiunPoka1cCEQvhEyWYiQJt65SL'
-					}
-					className='mx-auto top-[20%] w-60 h-60 rounded-full mb-4 backdrop-blur-sm'
-					alt='Profile Picture'
+					src={profile?.avatar}
+					className='mx-auto top-[20%] w-60 h-60 rounded-full mb-4 backdrop-blur-sm opacity-80'
+					text={profile?.displayName || profile?.address}
+					textColor='white'
 					color='gradient'
+					alt='Profile Picture'
+					
 					bordered
 				/>
 			</Card.Body>

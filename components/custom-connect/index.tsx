@@ -55,7 +55,7 @@ const CustomConnectButton = () => {
 							color='secondary'
 							size='lg'
 							src={
-								userDetails.avatar ||
+								userDetails?.avatar ||
 								'https://i.pravatar.cc/150?u=a042581f4e29026704d'
 							}
 						/>

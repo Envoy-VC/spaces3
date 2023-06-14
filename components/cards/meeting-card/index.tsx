@@ -6,7 +6,12 @@ import { useAddress } from '@thirdweb-dev/react';
 import toast, { Toaster } from 'react-hot-toast';
 
 import { MeetingDetails } from '@/sections/dashboard';
-import { checkReminderExists, updateReminder } from '@/services/graphql';
+import {
+	checkReminderExists,
+	updateReminder,
+	checkUserExists,
+	createProfile,
+} from '@/services/graphql';
 
 import { Inter } from 'next/font/google';
 
@@ -40,6 +45,19 @@ const MeetingCard = ({
 			toast.success('Reminder Updated');
 		} else {
 			toast.error('Please Connect Wallet');
+		}
+	};
+
+	const joinMeeting = async () => {
+		if (!address) {
+			toast.error('Please Connect Wallet');
+			return;
+		} else {
+			const userExists = await checkUserExists(address);
+			if (!userExists) {
+				await createProfile(address);
+			}
+			router.push(`/lobby/${meetingId}`);
 		}
 	};
 
@@ -107,7 +125,7 @@ const MeetingCard = ({
 						iconRight={<ArrowRight set='bold' primaryColor='#0072F5' />}
 						className='text-md text-semibold'
 						onPress={() => {
-							router.push(`/lobby/${meetingId}`);
+							joinMeeting();
 						}}
 					>
 						Join Meeting

@@ -27,7 +27,6 @@ const Header = ({ headline, tagline, isDashboard }: Props) => {
 		async function fetchProfile() {
 			if (address) {
 				const profile = await getProfile(address);
-				console.log(profile);
 				setUserDetails(profile);
 			}
 		}
@@ -44,7 +43,7 @@ const Header = ({ headline, tagline, isDashboard }: Props) => {
 				<span className='text-3xl font-bold'>
 					{!isDashboard
 						? headline
-						: `Hi ${userDetails.displayName || ''} 👋
+						: `Hi ${userDetails?.displayName || ''} 👋
 `}
 				</span>
 				<span>{tagline}</span>
