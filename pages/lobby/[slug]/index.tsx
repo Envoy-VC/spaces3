@@ -27,8 +27,10 @@ const Lobby = () => {
 			});
 			await joinLobby(meetingId, res?.token);
 		}
-		joinMeetingRoom();
-	}, []);
+		if (meetingId) {
+			joinMeetingRoom();
+		}
+	}, [meetingId]);
 
 	return (
 		<main className={`${inter.className}`}>
