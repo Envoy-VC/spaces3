@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { useAddress } from '@thirdweb-dev/react';
-import { useLobby } from '@huddle01/react/hooks';
+import { useLobby, useAudio } from '@huddle01/react/hooks';
 
 import { Button, Loading } from '@nextui-org/react';
 import { People } from 'react-iconly';
@@ -17,6 +17,7 @@ const Lobby = () => {
 	const router = useRouter();
 	const address = useAddress();
 	const { joinLobby, isLoading, isLobbyJoined, error } = useLobby();
+	const { fetchAudioStream } = useAudio();
 	const meetingId = router?.query.slug as string;
 
 	React.useEffect(() => {
@@ -52,6 +53,10 @@ const Lobby = () => {
 									size='xl'
 									icon={<People set='bold' primaryColor='#fff' size={32} />}
 									className='bg-[#0072F5]'
+									onPress={() => {
+										fetchAudioStream();
+										router.push(`/meeting/${meetingId}`);
+									}}
 								>
 									Enter Room
 								</Button>

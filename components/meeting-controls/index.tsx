@@ -1,13 +1,35 @@
 import React from 'react';
-import { Button } from '@nextui-org/react';
+import { Button, Tooltip } from '@nextui-org/react';
+import { useAudio, useRoom } from '@huddle01/react/hooks';
+import { useRouter } from 'next/navigation';
+import EmojiToolbar from '../emoji-toolbar';
 import { Voice, VoiceMute } from '../icons';
-import { Call, Heart2 } from 'react-iconly';
+import { Call, Heart2, Message } from 'react-iconly';
 
 const MeetingControls = () => {
-	const [isAudioStreamEnabled, setIsAudioStreamEnabled] = React.useState(false);
+	const {
+		produceAudio,
+		stopProducingAudio,
+		stream,
+		isProducing,
+		fetchAudioStream,
+	} = useAudio();
+	const { leaveRoom } = useRoom();
+	const router = useRouter();
 
 	const handleAudioStream = () => {
-		setIsAudioStreamEnabled(!isAudioStreamEnabled);
+		console.log('isProducing', isProducing);
+		if (isProducing) {
+			stopProducingAudio();
+		} else {
+			fetchAudioStream();
+			produceAudio(stream);
+		}
+	};
+
+	const handleLeaveMeeting = () => {
+		leaveRoom();
+		router.push('/');
 	};
 
 	return (
@@ -15,11 +37,9 @@ const MeetingControls = () => {
 			<Button
 				auto
 				className={`!w-fit px-[8px] ${
-					isAudioStreamEnabled ? 'bg-[#0072F5]' : 'bg-[#F02747]'
+					isProducing ? 'bg-[#0072F5]' : 'bg-[#F02747]'
 				} h-[3.25em]`}
-				icon={
-					isAudioStreamEnabled ? <Voice size={32} /> : <VoiceMute size={32} />
-				}
+				icon={isProducing ? <Voice size={32} /> : <VoiceMute size={32} />}
 				onPress={() => handleAudioStream()}
 			></Button>
 			<Button
@@ -35,13 +55,21 @@ const MeetingControls = () => {
 						size={36}
 					/>
 				}
+				onPress={() => handleLeaveMeeting()}
 			>
 				{''}
 			</Button>
+			<Tooltip trigger='click' content={<EmojiToolbar />} placement='top'>
+				<Button
+					auto
+					className='!w-fit px-[8px] bg-[#0072F5] h-[3.25em]'
+					icon={<Heart2 set='bold' size={32} primaryColor='#fff' />}
+				></Button>
+			</Tooltip>
 			<Button
 				auto
-				className='!w-fit px-[8px] bg-[#0072F5] h-[3.25em]'
-				icon={<Heart2 set='bold' size={32} primaryColor='#fff' />}
+				className='!w-fit px-[8px] bg-[#0072F5] h-[3.25em] flex xl:hidden'
+				icon={<Message set='bold' size={32} primaryColor='#fff' />}
 			></Button>
 		</div>
 	);

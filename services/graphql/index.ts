@@ -196,3 +196,42 @@ export const getCurrentMeetings = async () => {
 	const res: any = await client.request(getCurrentMeetings);
 	return res?.meetings;
 };
+
+export const updatePeerId = async ({
+	address,
+	peerId,
+}: {
+	address: string;
+	peerId: string;
+}) => {
+	const updatePeerId = gql`
+		mutation UpdatePeerId {
+			updateProfile(
+				data: { peerId: "${peerId}" }
+				where: { address: "${address}" }
+			) {
+				id
+			}
+			publishProfile(where: {address: "${address}"}) {
+				id
+  			}
+		}
+	`;
+
+	const res = await client.request(updatePeerId);
+	return res;
+};
+
+export const getProfileByPeerId = async (peerId: string) => {
+	const getProfile = gql`
+		query GetProfile {
+			profile(where: { peerId: "${peerId}" }) {
+				displayName
+				avatar
+			}
+		}
+	`;
+
+	const res: any = await client.request(getProfile);
+	return res?.profile;
+};

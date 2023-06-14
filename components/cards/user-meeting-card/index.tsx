@@ -1,11 +1,36 @@
 import React from 'react';
 import { Card, Avatar, Image } from '@nextui-org/react';
+import { Audio } from '@huddle01/react/components';
 import { Voice, VoiceMute } from '@/components/icons';
+import { getProfileByPeerId } from '@/services/graphql';
 
 import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 
-const UserMeetingCard = () => {
+interface UserMeetingCardProps {
+	peerId: string;
+	mic?: MediaStreamTrack;
+}
+
+type ProfileProps = {
+	displayName?: string;
+	avatar?: string;
+};
+
+const UserMeetingCard = ({ peerId, mic }: UserMeetingCardProps) => {
+	const [profile, setProfile] = React.useState<ProfileProps>({});
+	// Get User Profile
+	React.useEffect(() => {
+		async function getProfile() {
+			const profile = await getProfileByPeerId(peerId);
+			console.log(profile);
+			if (profile) {
+				setProfile(profile);
+			}
+		}
+		getProfile();
+	}, []);
+
 	return (
 		<Card
 			css={{
@@ -20,29 +45,30 @@ const UserMeetingCard = () => {
 				css={{ p: '0px', m: '0px' }}
 				className={`${inter.className} overflow-hidden`}
 			>
+				<Audio peerId={peerId} debug />
 				<Image
 					src={
+						profile?.avatar ||
 						'https://geekculture.co/wp-content/uploads/2018/03/silicon-valley-s5-intro-feature.jpg'
 					}
 					alt='Profile Image'
 					className='absolute !w-full !h-full object-cover scale-[180%] overflow-hidden blur-sm saturate-150 contrast-125'
 				/>
 				<div className='relative flex flex-col justify-evenly h-full p-4'>
-					<div className='text-lg font-semibold'>Richie</div>
+					<div className='text-lg font-semibold'>
+						{profile?.displayName || ''}
+					</div>
 					<div className=''>
 						<Avatar
-							src='https://ipfs.io/ipfs/QmYrU5XFRiYtWeTtvFDeZjzTSV3crEg4aeRYGKW1ip9Nh2'
+							src={profile.avatar || ''}
 							className='mx-auto w-36 h-36 xl:w-48 xl:h-48 rounded-full mb-4 backdrop-blur-sm opacity-80'
-							text='Hello'
+							text={profile.displayName}
 							textColor='white'
-                            color='gradient'
-                            borderWeight='bold'
+							color='gradient'
+							borderWeight='bold'
 							alt='Profile Picture'
 							bordered
 						/>
-					</div>
-					<div>
-						<Voice />
 					</div>
 				</div>
 			</Card.Body>
