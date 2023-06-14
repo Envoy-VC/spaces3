@@ -8,6 +8,7 @@ import {
 	useAudio,
 	useMeetingMachine,
 } from '@huddle01/react/hooks';
+import { Audio } from '@huddle01/react/components';
 import { useAddress } from '@thirdweb-dev/react';
 import { updatePeerId } from '@/services/graphql';
 
@@ -63,14 +64,15 @@ const Meeting = () => {
 					<div className='max-w-[90vw] w-full mx-auto flex flex-row h-[75dvh]'>
 						<div className='basis-[100%] xl:basis-2/3 overflow-scroll no-scrollbar'>
 							<div className='flex flex-row flex-wrap justify-evenly gap-8'>
-								<UserMeetingCard
-									peerId={state?.context.peerId}
-									mic={stream?.getAudioTracks().at(0)}
-								/>
+								<UserMeetingCard peerId={state?.context.peerId} />
+								<Audio peerId={state?.context.peerId} debug />
 								{Object.values(peers)
 									.filter((peer) => peer.peerId)
 									.map((peer, index) => (
-										<UserMeetingCard key={index} {...peer} />
+										<div key={index}>
+											<Audio peerId={peer.peerId} debug />
+											<UserMeetingCard {...peer} />
+										</div>
 									))}
 							</div>
 						</div>

@@ -1,7 +1,5 @@
 import React from 'react';
 import { Card, Avatar, Image } from '@nextui-org/react';
-import { Audio } from '@huddle01/react/components';
-import { Voice, VoiceMute } from '@/components/icons';
 import { getProfileByPeerId } from '@/services/graphql';
 
 import { Inter } from 'next/font/google';
@@ -45,7 +43,6 @@ const UserMeetingCard = ({ peerId, mic }: UserMeetingCardProps) => {
 				css={{ p: '0px', m: '0px' }}
 				className={`${inter.className} overflow-hidden`}
 			>
-				<Audio peerId={peerId} debug />
 				<Image
 					src={
 						profile?.avatar ||
