@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@nextui-org/react';
-import { Voice } from 'react-iconly';
+import { Voice, VoiceMute } from '../icons';
 
 import { useAudio } from '@huddle01/react/hooks';
 
@@ -25,7 +25,9 @@ const LobbyControls = () => {
 			className={`!w-fit px-[8px] ${
 				isAudioStreamEnabled ? 'bg-[#0072F5]' : 'bg-[#F31260]'
 			} h-[3.5em]`}
-			icon={<Voice set='bold' primaryColor='#fff' size={36} />}
+			icon={
+				isAudioStreamEnabled ? <Voice size={36} /> : <VoiceMute size={36} />
+			}
 			onPress={() => handleAudioStream()}
 		></Button>
 	);
