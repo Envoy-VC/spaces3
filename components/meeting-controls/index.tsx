@@ -12,7 +12,6 @@ const MeetingControls = () => {
 		stopProducingAudio,
 		stream,
 		isProducing,
-		fetchAudioStream,
 	} = useAudio();
 	const { leaveRoom } = useRoom();
 	const router = useRouter();
@@ -22,7 +21,6 @@ const MeetingControls = () => {
 		if (isProducing) {
 			stopProducingAudio();
 		} else {
-			fetchAudioStream();
 			produceAudio(stream);
 		}
 	};
