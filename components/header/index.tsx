@@ -44,7 +44,7 @@ const Header = ({ headline, tagline, isDashboard }: Props) => {
 				<span className='text-3xl font-bold'>
 					{!isDashboard
 						? headline
-						: `Hi ${userDetails.displayName} 👋
+						: `Hi ${userDetails.displayName || ''} 👋
 `}
 				</span>
 				<span>{tagline}</span>
