@@ -66,12 +66,12 @@ const MeetingCard = ({
 			<Card
 				css={{
 					mw: '526px',
-					minWidth: '526px',
+					minWidth: '',
 					background: 'Black',
 					padding: '16px',
 					borderRadius: '24px',
 				}}
-				className='border-gray-800 border-2 outline-none meeting-card'
+				className='border-gray-800 border-2 outline-none meeting-card sm:w-[526px]'
 			>
 				<Card.Header>
 					<div className='w-full flex justify-between items-center'>
