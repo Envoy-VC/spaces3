@@ -8,6 +8,7 @@ const inter = Inter({ subsets: ['latin'] });
 interface UserMeetingCardProps {
 	peerId: string;
 	mic?: MediaStreamTrack;
+	role: any;
 }
 
 type ProfileProps = {
@@ -15,8 +16,9 @@ type ProfileProps = {
 	avatar?: string;
 };
 
-const UserMeetingCard = ({ peerId, mic }: UserMeetingCardProps) => {
+const UserMeetingCard = ({ peerId, mic, role }: UserMeetingCardProps) => {
 	const [profile, setProfile] = React.useState<ProfileProps>({});
+
 	// Get User Profile
 	React.useEffect(() => {
 		async function getProfile() {
@@ -55,18 +57,21 @@ const UserMeetingCard = ({ peerId, mic }: UserMeetingCardProps) => {
 					<div className='text-lg font-semibold'>
 						{profile?.displayName || ''}
 					</div>
-					<div className=''>
-						<Avatar
-							src={profile.avatar || ''}
-							className='mx-auto w-36 h-36 xl:w-48 xl:h-48 rounded-full mb-4 backdrop-blur-sm opacity-80'
-							text={profile.displayName}
-							textColor='white'
-							color='gradient'
-							borderWeight='bold'
-							alt='Profile Picture'
-							bordered
-						/>
-					</div>
+					<Avatar
+						src={profile.avatar || ''}
+						className='mx-auto w-36 h-36 xl:w-48 xl:h-48 rounded-full mb-4 backdrop-blur-sm opacity-80'
+						text={profile.displayName}
+						textColor='white'
+						color='gradient'
+						borderWeight='bold'
+						alt='Profile Picture'
+						bordered
+					/>
+					{role === 'host' && (
+						<div className='w-fit text-lg font-semibold px-4 py-[2px] rounded-3xl bg-blue-600'>
+							Host
+						</div>
+					)}
 				</div>
 			</Card.Body>
 		</Card>

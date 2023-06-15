@@ -10,18 +10,17 @@ const MeetingControls = () => {
 	const {
 		produceAudio,
 		stopProducingAudio,
-		stream,
+		stream: AudioStream,
 		isProducing,
 	} = useAudio();
 	const { leaveRoom } = useRoom();
 	const router = useRouter();
 
 	const handleAudioStream = () => {
-		console.log('isProducing', isProducing);
 		if (isProducing) {
 			stopProducingAudio();
 		} else {
-			produceAudio(stream);
+			produceAudio(AudioStream);
 		}
 	};
 
@@ -39,6 +38,7 @@ const MeetingControls = () => {
 				} h-[3.25em]`}
 				icon={isProducing ? <Voice size={32} /> : <VoiceMute size={32} />}
 				onPress={() => handleAudioStream()}
+				disabled={!produceAudio.isCallable}
 			></Button>
 			<Button
 				auto
