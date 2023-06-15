@@ -86,12 +86,13 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 		meetingId: string;
 	}) => {
 		const userExists = await pushUserExists();
+		console.log(userExists);
 		if (!userExists) {
 			const user = await PushAPI.user.create({
 				account: `eip155:${address}`,
 			});
 		}
-
+		console.log(address);
 		const user = await PushAPI.user.get({
 			account: `eip155:${address}`,
 		});

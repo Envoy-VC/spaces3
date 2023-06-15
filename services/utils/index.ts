@@ -86,7 +86,7 @@ export const getJoinRoomToken = async ({
 }) => {
 	let userType = 'guest';
 	const meetingDetails: any = await getMeetingDetails(meetingId);
-	if (meetingDetails.hostWalletAddress.includes(address)) {
+	if (meetingDetails?.hostWalletAddress.includes(address)) {
 		userType = 'host';
 	}
 	const options = {

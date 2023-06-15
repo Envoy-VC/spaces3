@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { useAddress } from '@thirdweb-dev/react';
+import { useHuddle01 } from '@huddle01/react';
 
 import { Input, Button } from '@nextui-org/react';
 import toast, { Toaster } from 'react-hot-toast';

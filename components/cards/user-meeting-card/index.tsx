@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] });
 interface UserMeetingCardProps {
 	peerId: string;
 	mic?: MediaStreamTrack;
-	role: any;
+	role?: any;
 }
 
 type ProfileProps = {

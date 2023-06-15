@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { useAddress } from '@thirdweb-dev/react';
-import { useLobby, useAudio } from '@huddle01/react/hooks';
+import { useHuddle01, useLobby, useAudio } from '@huddle01/react/hooks';
 import { toast, Toaster } from 'react-hot-toast';
 
 import { Button, Loading } from '@nextui-org/react';
@@ -10,11 +10,19 @@ import { LobbyCard } from '@/components/cards';
 import { Sidebar, NavBar, LobbyControls } from '@/components';
 import { Header } from '@/components';
 
+import { HUDDLE_PROJECT_ID } from '@/utils';
+
 import { Inter } from 'next/font/google';
 import { getJoinRoomToken } from '@/services/utils';
 const inter = Inter({ subsets: ['latin'] });
 
 const Lobby = () => {
+	const { initialize, isInitialized } = useHuddle01();
+
+	React.useEffect(() => {
+		initialize(HUDDLE_PROJECT_ID);
+	}, []);
+
 	const router = useRouter();
 	const address = useAddress();
 	const { joinLobby, isLoading, isLobbyJoined } = useLobby();
@@ -23,16 +31,22 @@ const Lobby = () => {
 
 	React.useEffect(() => {
 		async function joinMeetingLobby() {
-			const res = await getJoinRoomToken({
-				meetingId: meetingId,
-				address: address!,
-			});
-			await joinLobby(meetingId, res?.token);
+			try {
+				if (isInitialized) {
+					const res = await getJoinRoomToken({
+						meetingId: meetingId,
+						address: address!,
+					});
+					await joinLobby(meetingId, res?.token);
+				}
+			} catch (error) {
+				console.error(error);
+			}
 		}
-		if (meetingId) {
+		if (meetingId && isInitialized) {
 			joinMeetingLobby();
 		}
-	}, [meetingId]);
+	}, [meetingId, isInitialized]);
 
 	const handleJoinRoom = () => {
 		if (!AudioStream?.getAudioTracks().at(0)?.enabled) {
