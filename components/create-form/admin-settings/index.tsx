@@ -16,6 +16,7 @@ import {
 	createMeeting,
 	checkUserExists,
 	createProfile,
+	updateReminder,
 } from '@/services/graphql';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -78,9 +79,11 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 	const createGroupChat = async ({
 		form,
 		adminList,
+		meetingId,
 	}: {
 		form: FormProps;
 		adminList: string[];
+		meetingId: string;
 	}) => {
 		const userExists = await pushUserExists();
 		if (!userExists) {
@@ -98,12 +101,15 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 			signer: signer,
 		});
 
+		let _adminList = adminList;
+		_adminList = _adminList.filter((item) => ![address].includes(item));
+
 		const options = {
-			groupName: form.title,
+			groupName: meetingId,
 			groupDescription: form.description || '',
 			members: [],
 			groupImage: 'https://spaces3.vercel.app/logo.png',
-			admins: adminList.splice(adminList.indexOf(address!), 1),
+			admins: _adminList,
 			isPublic: true,
 			account: address!,
 			pgpPrivateKey: pgpDecryptedPvtKey,
@@ -124,10 +130,6 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 				const res = await createProfile(adminList[0]);
 			}
 
-			const groupChatResponse = await createGroupChat({
-				form: form,
-				adminList: adminList,
-			});
 			const { startDate, endDate } = resolveDates(
 				form.date,
 				form.startTime,
@@ -155,15 +157,29 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 			);
 			const res = await response.json();
 			const meetingId = res?.data?.roomId;
-			console.log(res);
+			if (!meetingId) {
+				toast.error('Something went wrong');
+				return;
+			}
+
+			const groupChatResponse = await createGroupChat({
+				form: form,
+				adminList: adminList,
+				meetingId: meetingId,
+			});
 
 			const result = await createMeeting({
 				meetingId: meetingId,
 				hostName: form.organizer,
 				startDate: startDate,
 				endDate: endDate,
-				chatId: groupChatResponse?.chatId,
 			});
+
+			// Add Reminders for all admins
+			for (let i = 0; i < adminList.length; i++) {
+				const reminder = await updateReminder(meetingId, adminList[i]);
+			}
+
 			toast.success('Meeting created successfully');
 		} catch (error) {
 			console.log(error);
