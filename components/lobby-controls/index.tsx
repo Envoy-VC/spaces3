@@ -5,30 +5,24 @@ import { Voice, VoiceMute } from '../icons';
 import { useAudio } from '@huddle01/react/hooks';
 
 const LobbyControls = () => {
-	const { fetchAudioStream, stopAudioStream, stream: AudioStream } = useAudio();
-	const [isAudioStreamEnabled, setIsAudioStreamEnabled] =
-		React.useState<boolean>(false);
-
-	const handleAudioStream = () => {
-		if (AudioStream?.getAudioTracks().length > 0) {
-			stopAudioStream();
-			setIsAudioStreamEnabled(false);
-		} else {
-			fetchAudioStream();
-			setIsAudioStreamEnabled(true);
-		}
-	};
+	const { fetchAudioStream, stream: AudioStream } = useAudio();
 
 	return (
 		<Button
 			auto
 			className={`!w-fit px-[8px] ${
-				isAudioStreamEnabled ? 'bg-[#0072F5]' : 'bg-[#F31260]'
+				AudioStream?.getAudioTracks().at(0)?.enabled
+					? 'bg-[#0072F5]'
+					: 'bg-[#F31260]'
 			} h-[3.5em]`}
 			icon={
-				isAudioStreamEnabled ? <Voice size={36} /> : <VoiceMute size={36} />
+				AudioStream?.getAudioTracks().at(0)?.enabled ? (
+					<Voice size={36} />
+				) : (
+					<VoiceMute size={36} />
+				)
 			}
-			onPress={() => handleAudioStream()}
+			onPress={() => fetchAudioStream()}
 		></Button>
 	);
 };

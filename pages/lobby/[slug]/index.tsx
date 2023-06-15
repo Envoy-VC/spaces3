@@ -2,6 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { useAddress } from '@thirdweb-dev/react';
 import { useLobby, useAudio } from '@huddle01/react/hooks';
+import { toast, Toaster } from 'react-hot-toast';
 
 import { Button, Loading } from '@nextui-org/react';
 import { People } from 'react-iconly';
@@ -16,12 +17,12 @@ const inter = Inter({ subsets: ['latin'] });
 const Lobby = () => {
 	const router = useRouter();
 	const address = useAddress();
-	const { joinLobby, isLoading, isLobbyJoined, error } = useLobby();
-	const { fetchAudioStream } = useAudio();
+	const { joinLobby, isLoading, isLobbyJoined } = useLobby();
+	const { stream: AudioStream } = useAudio();
 	const meetingId = router?.query.slug as string;
 
 	React.useEffect(() => {
-		async function joinMeetingRoom() {
+		async function joinMeetingLobby() {
 			const res = await getJoinRoomToken({
 				meetingId: meetingId,
 				address: address!,
@@ -29,9 +30,17 @@ const Lobby = () => {
 			await joinLobby(meetingId, res?.token);
 		}
 		if (meetingId) {
-			joinMeetingRoom();
+			joinMeetingLobby();
 		}
 	}, [meetingId]);
+
+	const handleJoinRoom = () => {
+		if (!AudioStream?.getAudioTracks().at(0)?.enabled) {
+			toast.error('Please enable audio device');
+		} else {
+			router.push(`/room/${meetingId}`);
+		}
+	};
 
 	return (
 		<main className={`${inter.className}`}>
@@ -53,10 +62,7 @@ const Lobby = () => {
 									size='xl'
 									icon={<People set='bold' primaryColor='#fff' size={32} />}
 									className='bg-[#0072F5]'
-									onPress={() => {
-										fetchAudioStream();
-										router.push(`/meeting/${meetingId}`);
-									}}
+									onPress={() => handleJoinRoom()}
 								>
 									Enter Room
 								</Button>
@@ -69,6 +75,7 @@ const Lobby = () => {
 						</div>
 					)}
 				</div>
+				<Toaster position='bottom-left' />
 			</div>
 		</main>
 	);
