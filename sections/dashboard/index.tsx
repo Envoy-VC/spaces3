@@ -32,7 +32,6 @@ const Dashboard = () => {
 			const meetings = await getCurrentMeetings();
 			for await (const meeting of meetings) {
 				const details: any = await getMeetingDetails(meeting?.meetingId);
-				console.log(details);
 				const hostDetails: any = await getProfile(
 					details?.hostWalletAddress?.at(0)
 				);

@@ -37,13 +37,14 @@ const Lobby = () => {
 						meetingId: meetingId,
 						address: address!,
 					});
-					await joinLobby(meetingId, res?.token);
+
+					joinLobby(meetingId, res?.token);
 				}
 			} catch (error) {
 				console.error(error);
 			}
 		}
-		if (meetingId && isInitialized) {
+		if (meetingId) {
 			joinMeetingLobby();
 		}
 	}, [meetingId, isInitialized]);
@@ -66,7 +67,7 @@ const Lobby = () => {
 						headline='Join Meeting 🎥'
 						tagline='Secure, private, and decentralized'
 					/>
-					{isLobbyJoined && (
+					{isLobbyJoined ? (
 						<div className='w-fit flex flex-col mx-auto'>
 							<LobbyCard />
 							<div className='flex flex-col gap-8 lg:flex-row justify-evenly items-center mt-8'>
@@ -82,12 +83,19 @@ const Lobby = () => {
 								</Button>
 							</div>
 						</div>
-					)}
-					{(isLoading || !isLobbyJoined) && (
+					) : (
 						<div className=' w-fit mx-auto mt-60'>
 							<Loading size='xl' />
 						</div>
 					)}
+					<Button
+						auto
+						size='xl'
+						className='bg-[#0072F5]'
+						onPress={() => console.log(isInitialized)}
+					>
+						click
+					</Button>
 				</div>
 				<Toaster position='bottom-left' />
 			</div>
