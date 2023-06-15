@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import {
 	useRoom,
 	usePeers,
-	useHuddle01,
 	useAudio,
 	useMeetingMachine,
 } from '@huddle01/react/hooks';
@@ -24,17 +23,12 @@ const Meeting = () => {
 	const router = useRouter();
 	const address = useAddress();
 	const { state } = useMeetingMachine();
-	const { initialize } = useHuddle01();
 	const { peers } = usePeers();
 	const { stream } = useAudio();
 	const { joinRoom, isLoading, isRoomJoined } = useRoom();
 	const [loading, setLoading] = React.useState<boolean>(false);
 
 	const meetingId = router?.query.slug as string;
-
-	React.useEffect(() => {
-		initialize(HUDDLE_PROJECT_ID);
-	}, [meetingId]);
 
 	React.useEffect(() => {
 		async function joinMeetingRoom() {
@@ -62,9 +56,12 @@ const Meeting = () => {
 			{isRoomJoined && !isLoading && !loading && (
 				<div>
 					<div className='max-w-[90vw] w-full mx-auto flex flex-row h-[75dvh]'>
-						<div className='basis-[100%] xl:basis-2/3 overflow-scroll no-scrollbar'>
-							<div className='flex flex-row flex-wrap justify-evenly gap-8'>
-								<UserMeetingCard peerId={state?.context.peerId} />
+						<div className='basis-[100%] xl:basis-2/3 overflow-scroll no-scrollbar my-auto'>
+							<div className='flex flex-row flex-wrap justify-evenly gap-8 border-2'>
+								<UserMeetingCard
+									peerId={state?.context.peerId}
+									role={state?.context.role}
+								/>
 								{Object.values(peers)
 									.filter((peer) => peer.peerId)
 									.map((peer, index) => (
@@ -80,7 +77,6 @@ const Meeting = () => {
 					</div>
 					<div className='max-w-screen-sm w-full mx-auto mt-8 p-4'>
 						<MeetingControls />
-						<Button onPress={() => console.log(state.context)}>Click Me</Button>
 					</div>
 				</div>
 			)}
