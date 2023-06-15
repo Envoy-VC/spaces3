@@ -38,7 +38,7 @@ const Lobby = () => {
 		if (!AudioStream?.getAudioTracks().at(0)?.enabled) {
 			toast.error('Please enable audio device');
 		} else {
-			router.push(`/room/${meetingId}`);
+			router.push(`/meeting/${meetingId}`);
 		}
 	};
 
