@@ -9,6 +9,8 @@ import {
 	Card,
 	Loading,
 } from '@nextui-org/react';
+import { useAddress, useSigner } from '@thirdweb-dev/react';
+import * as PushAPI from '@pushprotocol/restapi';
 import { CaretLeft, Plus, AddUser, Delete } from 'react-iconly';
 import {
 	createMeeting,
@@ -36,6 +38,8 @@ interface Props {
 }
 
 const AdminDetails = ({ step, setStep, form }: Props) => {
+	const address = useAddress();
+	const signer = useSigner();
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 	const [isTokenGated, setIsTokenGated] = React.useState(false);
 	const [selectedToken, setSelectedToken] = React.useState<TokenType>('ERC20');
@@ -60,13 +64,70 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 		setAdminList([...list]);
 	};
 
+	const pushUserExists = async () => {
+		const user = await PushAPI.user.get({
+			account: `eip155:${address}`,
+		});
+		if (user === null) {
+			return false;
+		} else {
+			return true;
+		}
+	};
+
+	const createGroupChat = async ({
+		form,
+		adminList,
+	}: {
+		form: FormProps;
+		adminList: string[];
+	}) => {
+		const userExists = await pushUserExists();
+		if (!userExists) {
+			const user = await PushAPI.user.create({
+				account: `eip155:${address}`,
+			});
+		}
+
+		const user = await PushAPI.user.get({
+			account: `eip155:${address}`,
+		});
+
+		const pgpDecryptedPvtKey = await PushAPI.chat.decryptPGPKey({
+			encryptedPGPPrivateKey: user.encryptedPrivateKey,
+			signer: signer,
+		});
+
+		const options = {
+			groupName: form.title,
+			groupDescription: form.description || '',
+			members: [],
+			groupImage: 'https://spaces3.vercel.app/logo.png',
+			admins: adminList.splice(adminList.indexOf(address!), 1),
+			isPublic: true,
+			account: address!,
+			pgpPrivateKey: pgpDecryptedPvtKey,
+		};
+		const response = await PushAPI.chat.createGroup(options);
+		return response;
+	};
+
 	const handleCreateMeeting = async () => {
 		try {
+			if (!address) {
+				alert('Please connect your wallet');
+				return;
+			}
 			setIsLoading(true);
 			const userExists = await checkUserExists(adminList[0]);
 			if (!userExists) {
 				const res = await createProfile(adminList[0]);
 			}
+
+			const groupChatResponse = await createGroupChat({
+				form: form,
+				adminList: adminList,
+			});
 			const { startDate, endDate } = resolveDates(
 				form.date,
 				form.startTime,
@@ -95,11 +156,13 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 			const res = await response.json();
 			const meetingId = res?.data?.roomId;
 			console.log(res);
+
 			const result = await createMeeting({
 				meetingId: meetingId,
 				hostName: form.organizer,
 				startDate: startDate,
 				endDate: endDate,
+				chatId: groupChatResponse?.chatId,
 			});
 			toast.success('Meeting created successfully');
 		} catch (error) {

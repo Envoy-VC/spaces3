@@ -57,7 +57,7 @@ const Meeting = () => {
 				<div>
 					<div className='max-w-[90vw] w-full mx-auto flex flex-row h-[75dvh]'>
 						<div className='basis-[100%] xl:basis-2/3 overflow-scroll no-scrollbar my-auto'>
-							<div className='flex flex-row flex-wrap justify-evenly gap-8 border-2'>
+							<div className='flex flex-row flex-wrap justify-evenly gap-8'>
 								<UserMeetingCard
 									peerId={state?.context.peerId}
 									role={state?.context.role}

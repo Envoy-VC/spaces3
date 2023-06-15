@@ -16,6 +16,7 @@ type CreateMeetingProps = {
 	hostName: string;
 	startDate: string;
 	endDate: string;
+	chatId: string;
 };
 
 export const getProfile = async (address: string) => {
@@ -79,10 +80,11 @@ export const createMeeting = async ({
 	hostName,
 	startDate,
 	endDate,
+	chatId,
 }: CreateMeetingProps) => {
 	const createMeeting = gql`
 		mutation CreateMeeting {
-			createMeeting(data: { meetingId: "${meetingId}", host: "${hostName}", startDate: "${startDate}", endDate: "${endDate}" }) {
+			createMeeting(data: { meetingId: "${meetingId}", host: "${hostName}", startDate: "${startDate}", endDate: "${endDate}" ,chatId: "${chatId}"}) {
 				id
 			}
 			publishMeeting(where: { meetingId: "${meetingId}" }) {
