@@ -74,7 +74,7 @@ const Chat = ({ chatId, pgpDecrpyptedPvtKey, chats }: ChatDetails) => {
 	};
 
 	return (
-		<div className=' w-full flex flex-col justify-end items-center rounded-3xl bg-[#0e0f0f] shadow-2xl pb-8 px-4'>
+		<div className=' w-full flex flex-col justify-end items-center rounded-3xl bg-[#0e0f0f] shadow-2xl pb-8 px-4 h-full'>
 			<div
 				ref={chatContainer}
 				className='flex flex-col gap-2 w-full overflow-scroll no-scrollbar pr-12 mb-4'
@@ -97,7 +97,7 @@ const Chat = ({ chatId, pgpDecrpyptedPvtKey, chats }: ChatDetails) => {
 						size='lg'
 						bordered
 						color='primary'
-						className='min-w-[400px]'
+						className='sm:min-w-[400px] min-w-[256px]'
 						value={message}
 						onChange={(e) => setMessage(e.target.value)}
 					/>

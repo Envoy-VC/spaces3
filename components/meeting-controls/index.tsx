@@ -7,7 +7,15 @@ import { Voice, VoiceMute } from '../icons';
 import { Call, Heart2, Message } from 'react-iconly';
 import { HUDDLE_PROJECT_ID } from '@/utils';
 
-const MeetingControls = () => {
+interface MeetingControlsProps {
+	modalOpen: boolean;
+	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const MeetingControls = ({
+	modalOpen,
+	setIsModalOpen,
+}: MeetingControlsProps) => {
 	const { initialize, isInitialized } = useHuddle01();
 
 	React.useEffect(() => {
@@ -75,6 +83,7 @@ const MeetingControls = () => {
 					auto
 					className='!w-fit px-[8px] bg-[#0072F5] h-[3.25em] flex xl:hidden'
 					icon={<Message set='bold' size={32} primaryColor='#fff' />}
+					onPress={() => setIsModalOpen(!modalOpen)}
 				></Button>
 			</div>
 		);

@@ -180,7 +180,7 @@ const Meeting = () => {
 							</div>
 						</div>
 
-						<div className='hidden xl:flex xl:basis-1/3 border-2'>
+						<div className='hidden xl:flex xl:basis-1/3'>
 							{chatDetails?.chatId ? (
 								<Chat {...chatDetails} chats={chats} />
 							) : (
@@ -214,7 +214,7 @@ const Meeting = () => {
 								{chatDetails?.chatId ? (
 									<Chat {...chatDetails} chats={chats} />
 								) : (
-									<div className='w-full flex items-center justify-center rounded-3xl bg-[#0e0f0f] shadow-2xl'>
+									<div className='w-full flex items-center justify-center rounded-3xl bg-[#0e0f0f] shadow-2xl h-full'>
 										<Button
 											className='bg-blue-500'
 											size='lg'
@@ -234,7 +234,10 @@ const Meeting = () => {
 						</div>
 					</div>
 					<div className='max-w-screen-sm w-full mx-auto mt-8 p-4'>
-						<MeetingControls />
+						<MeetingControls
+							modalOpen={modalOpen}
+							setIsModalOpen={setIsModalOpen}
+						/>
 					</div>
 				</div>
 			) : (
