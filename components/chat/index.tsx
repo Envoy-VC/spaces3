@@ -3,7 +3,7 @@ import React from 'react';
 import { Button, Textarea, Loading } from '@nextui-org/react';
 import { Send } from 'react-iconly';
 
-import { ChatDetails } from '@/pages/meeting';
+import { ChatDetails } from '@/pages/meeting/[slug]';
 import * as PushAPI from '@pushprotocol/restapi';
 import { useAddress, useSigner } from '@thirdweb-dev/react';
 import { ENV } from '@pushprotocol/socket/src/lib/constants';
