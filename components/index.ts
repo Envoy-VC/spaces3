@@ -8,6 +8,7 @@ import LobbyControls from './lobby-controls';
 import MeetingControls from './meeting-controls';
 import MeetingHeader from './meeting-header';
 import EmojiToolbar from './emoji-toolbar';
+import Chat from './chat';
 
 export {
 	Sidebar,
@@ -20,4 +21,5 @@ export {
 	MeetingControls,
 	MeetingHeader,
 	EmojiToolbar,
+	Chat,
 };
