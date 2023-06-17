@@ -88,14 +88,6 @@ const Lobby = () => {
 							<Loading size='xl' />
 						</div>
 					)}
-					<Button
-						auto
-						size='xl'
-						className='bg-[#0072F5]'
-						onPress={() => console.log(isInitialized)}
-					>
-						click
-					</Button>
 				</div>
 				<Toaster position='bottom-left' />
 			</div>
