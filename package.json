@@ -22,7 +22,6 @@
 		"eslint": "8.42.0",
 		"eslint-config-next": "13.4.4",
 		"ethers": "^5.7.2",
-		"framer-motion": "^10.12.16",
 		"graphql": "^16.6.0",
 		"graphql-request": "^6.1.0",
 		"next": "13.4.4",

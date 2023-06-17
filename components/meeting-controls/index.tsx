@@ -1,20 +1,25 @@
 import React from 'react';
-import { Button, Tooltip } from '@nextui-org/react';
-import { useAudio, useRoom, useHuddle01 } from '@huddle01/react/hooks';
-import { useRouter } from 'next/navigation';
-import EmojiToolbar from '../emoji-toolbar';
-import { Voice, VoiceMute } from '../icons';
-import { Call, Heart2, Message } from 'react-iconly';
-import { HUDDLE_PROJECT_ID } from '@/utils';
 
+import { useRouter } from 'next/navigation';
+import { useAudio, useRoom, useHuddle01 } from '@huddle01/react/hooks';
+
+import { Button, Tooltip } from '@nextui-org/react';
+import EmojiToolbar from '../emoji-toolbar';
+import { Call, Heart2, Message } from 'react-iconly';
+import { Voice, VoiceMute } from '../icons';
+
+import { ChatDetails } from '@/pages/meeting/[slug]';
+import { HUDDLE_PROJECT_ID } from '@/utils';
 interface MeetingControlsProps {
 	modalOpen: boolean;
 	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	chatDetails?: ChatDetails;
 }
 
 const MeetingControls = ({
 	modalOpen,
 	setIsModalOpen,
+	chatDetails,
 }: MeetingControlsProps) => {
 	const { initialize, isInitialized } = useHuddle01();
 
@@ -72,13 +77,18 @@ const MeetingControls = ({
 				>
 					{''}
 				</Button>
-				<Tooltip trigger='click' content={<EmojiToolbar />} placement='top'>
+				<Tooltip
+					trigger='click'
+					content={<EmojiToolbar {...chatDetails} />}
+					placement='top'
+				>
 					<Button
 						auto
 						className='!w-fit px-[8px] bg-[#0072F5] h-[3.25em]'
 						icon={<Heart2 set='bold' size={32} primaryColor='#fff' />}
 					></Button>
 				</Tooltip>
+
 				<Button
 					auto
 					className='!w-fit px-[8px] bg-[#0072F5] h-[3.25em] flex xl:hidden'

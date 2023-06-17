@@ -14,6 +14,7 @@ import { createSocketConnection, EVENTS } from '@pushprotocol/socket';
 
 import { Loading } from '@nextui-org/react';
 import { Audio } from '@huddle01/react/components';
+import { useEventListener } from '@huddle01/react';
 import { MeetingHeader, MeetingControls, Chat } from '@/components';
 import { UserMeetingCard } from '@/components/cards';
 
@@ -22,8 +23,9 @@ import { updatePeerId, getProfileByPeerId } from '@/services/graphql';
 import { ENV } from '@pushprotocol/socket/src/lib/constants';
 import { HUDDLE_PROJECT_ID } from '@/utils';
 
+import { emojiList } from '@/components/emoji-toolbar';
+
 import { Inter } from 'next/font/google';
-import { useEventListener } from '@huddle01/react';
 const inter = Inter({ subsets: ['latin'] });
 
 export type ChatType = {
@@ -56,6 +58,8 @@ const Meeting = () => {
 	const [isChatJoining, setIsChatJoining] = React.useState<boolean>(false);
 	const [chats, setChats] = React.useState<ChatType[]>([]);
 	const [modalOpen, setIsModalOpen] = React.useState<boolean>(false);
+
+	const reactionRef = React.useRef<HTMLDivElement>(null);
 
 	const meetingId = router?.query.slug as string;
 
@@ -180,15 +184,37 @@ const Meeting = () => {
 		}
 	};
 
-	sdkSocket?.on(EVENTS.CHAT_RECEIVED_MESSAGE, (message: any) =>
-		setChats([
-			...chats,
-			{
-				messageContent: message.messageContent,
-				from: message.fromCAIP10.split('eip155:').at(1),
-			},
-		])
-	);
+	sdkSocket?.on(EVENTS.CHAT_RECEIVED_MESSAGE, (message: any) => {
+		if (emojiList.includes(message.messageContent)) {
+			// move reaction div from bottom to top while reducing opacity
+			if (reactionRef.current) {
+				reactionRef.current.innerText = message.messageContent;
+				reactionRef.current.style.opacity = '1';
+				reactionRef.current.style.bottom = '0';
+				reactionRef.current.style.transition = 'all 3s ease-in';
+				setTimeout(() => {
+					if (reactionRef.current) {
+						reactionRef.current.style.bottom = '600px';
+					}
+				}, 1000);
+				setTimeout(() => {
+					if (reactionRef.current) {
+						reactionRef.current.style.bottom = '0px';
+						reactionRef.current.innerText = '';
+					}
+				}, 4000);
+				console.log(message);
+			}
+		} else {
+			setChats([
+				...chats,
+				{
+					messageContent: message.messageContent,
+					from: message.fromCAIP10.split('eip155:').at(1),
+				},
+			]);
+		}
+	});
 
 	return (
 		<main className={`${inter.className} mb-12 xl:mb-0`}>
@@ -267,7 +293,12 @@ const Meeting = () => {
 						<MeetingControls
 							modalOpen={modalOpen}
 							setIsModalOpen={setIsModalOpen}
+							chatDetails={chatDetails}
 						/>
+						<div
+							ref={reactionRef}
+							className='w-fit text-4xl relative ml-16 sm:ml-0'
+						></div>
 					</div>
 				</div>
 			) : (
