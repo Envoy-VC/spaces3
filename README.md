@@ -1,38 +1,27 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 📹 spaces3
 
-## Getting Started
+spaces3 is an audio conferencing app that leverages the power of decentralization to provide a seamless and secure communication experience. Built using the cutting-edge technologies of huddle01 and push chat, Spaces3 offers a range of features designed to enhance your virtual meetings and create a personalized online presence.
 
-First, run the development server:
+With spaces3, you have the ability to create meetings effortlessly and schedule them for future use. This allows you to plan ahead and ensure that all participants can join at the designated time. Additionally, Spaces3 offers the unique feature of token gating, which enables you to conduct meetings exclusively for your community. By implementing token gating, you can ensure that only authorized individuals can access and participate in your meetings, fostering a sense of exclusivity and privacy.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features ✨
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+- **Seamless wallet connection**: Connect your wallet securely using the ThirdWeb SDK and wallets, enabling smooth management of transactions and interactions within the app.
+- **Profile customization**: Customize your online presence by adding a profile picture, updating your bio, and showcasing your professional achievements, making it easier for others to identify and connect with you.
+- **Meeting creation and scheduling**: Effortlessly create and schedule meetings, ensuring that all participants can join at the designated time, enhancing planning and coordination.
+- **Token gating**: Conduct exclusive meetings for your community by implementing token gating, ensuring that only authorized individuals can access and participate, fostering a sense of exclusivity and privacy.
+- **Huddle01 integration**: Utilize Huddle01 for reliable video and audio infrastructure, providing a high-quality and seamless audiovisual experience for productive and engaging conversations.
+- **Push Chat**: Engage in real-time text-based conversations during meetings using Push Chat, enabling collaboration, information sharing, and active participation from all meeting participants.
+- **Live emoji reactions**: Express yourself in real-time using a variety of emojis as live reactions, adding a fun and interactive element to your conversations, making them more engaging and enjoyable for all participants.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+---
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Video Demo 🎥
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+You can find the video demo here:
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Getting Started 🚀
