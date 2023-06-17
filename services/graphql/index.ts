@@ -226,6 +226,7 @@ export const getProfileByPeerId = async (peerId: string) => {
 	const getProfile = gql`
 		query GetProfile {
 			profile(where: { peerId: "${peerId}" }) {
+				address
 				displayName
 				avatar
 			}

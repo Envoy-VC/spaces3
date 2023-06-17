@@ -17,12 +17,13 @@ import { Audio } from '@huddle01/react/components';
 import { MeetingHeader, MeetingControls, Chat } from '@/components';
 import { UserMeetingCard } from '@/components/cards';
 
-import { updatePeerId } from '@/services/graphql';
+import { updatePeerId, getProfileByPeerId } from '@/services/graphql';
 
 import { ENV } from '@pushprotocol/socket/src/lib/constants';
 import { HUDDLE_PROJECT_ID } from '@/utils';
 
 import { Inter } from 'next/font/google';
+import { useEventListener } from '@huddle01/react';
 const inter = Inter({ subsets: ['latin'] });
 
 export type ChatType = {
@@ -47,7 +48,7 @@ const Meeting = () => {
 	const address = useAddress();
 	const _signer = useSigner();
 	const { state } = useMeetingMachine();
-	const { peers } = usePeers();
+	const { peers, peerIds } = usePeers();
 	const { joinRoom, isLoading, isRoomJoined } = useRoom();
 
 	const [chatDetails, setChatDetails] = React.useState<ChatDetails>({});
@@ -76,6 +77,17 @@ const Meeting = () => {
 		}
 	}, [meetingId, isInitialized]);
 
+	useEventListener('room:new-peer', async () => {
+		const { membersList, adminList } = await getMembersAndAdmins();
+		console.log(adminList, address);
+		if (adminList?.includes(address!)) {
+			console.log('adding');
+			const newPeer = await getProfileByPeerId(peerIds[peerIds.length - 1]);
+			await addGroupMember(newPeer?.address);
+			console.log('New Peer Joined', peers, peerIds);
+		}
+	});
+
 	const startChat = async () => {
 		setIsChatJoining(true);
 		const pushSDKSocket = createSocketConnection({
@@ -101,43 +113,15 @@ const Meeting = () => {
 			signer: _signer,
 		});
 
-		const membersList = [];
-		const adminList = [];
-
-		for (let i = 0; i < res.members.length; i++) {
-			membersList.push(res?.members?.at(i)?.wallet.split('eip155:').at(1));
-			if (res?.members?.at(i)?.isAdmin) {
-				adminList.push(res?.members?.at(i)?.wallet.split('eip155:').at(1));
-			}
-		}
-
-		const groupDetails = {
-			chatId: res.chatId,
-			account: address!,
-			groupName: res.groupName,
-			groupDescription: res.groupDescription as string,
-			groupImage: res.groupImage as string,
-			admins: adminList as string[],
-			pgpPrivateKey: pgpDecryptedPvtKey,
-			members: [
-				'0xBF4979305B43B0eB5Bb6a5C67ffB89408803d3e1',
-				'0xe269688F24e1C7487f649fC3dCD99A4Bf15bDaA1',
-			] as string[],
-			env: ENV.PROD,
-		};
-
 		try {
-			if (res) {
-				await PushAPI.chat.updateGroup(groupDetails);
-				const response = await PushAPI.chat.approve({
-					status: 'Approved',
-					account: address,
-					senderAddress: res.chatId,
-					signer: _signer,
-					pgpPrivateKey: pgpDecryptedPvtKey,
-					env: ENV.PROD,
-				});
-			}
+			const approveChatRequest = await PushAPI.chat.approve({
+				status: 'Approved',
+				account: address!,
+				senderAddress: res.chatId,
+				signer: _signer,
+				pgpPrivateKey: pgpDecryptedPvtKey,
+				env: ENV.PROD,
+			});
 		} catch (error) {
 			console.log(error);
 		}
@@ -148,6 +132,51 @@ const Meeting = () => {
 			chats: chats,
 		});
 		setIsChatJoining(false);
+	};
+
+	const getMembersAndAdmins = async () => {
+		const res = await PushAPI.chat.getGroupByName({
+			groupName: meetingId,
+		});
+
+		const membersList = [];
+		const adminList = [];
+
+		for (let i = 0; i < res.members.length; i++) {
+			if (res?.members?.at(i)?.isAdmin) {
+				adminList.push(res?.members?.at(i)?.wallet.split('eip155:').at(1));
+			} else {
+				membersList.push(res?.members?.at(i)?.wallet.split('eip155:').at(1));
+			}
+		}
+
+		return { membersList, adminList };
+	};
+
+	const addGroupMember = async (peerAddress: string) => {
+		const res = await PushAPI.chat.getGroupByName({
+			groupName: meetingId,
+		});
+
+		const { membersList, adminList } = await getMembersAndAdmins();
+
+		const groupDetails = {
+			chatId: res.chatId,
+			account: address!,
+			groupName: res.groupName,
+			groupDescription: res.groupDescription as string,
+			groupImage: res.groupImage as string,
+			admins: adminList as string[],
+			pgpPrivateKey: chatDetails.pgpDecrpyptedPvtKey,
+			members: [...membersList, ...adminList, peerAddress] as string[],
+			env: ENV.PROD,
+		};
+
+		try {
+			await PushAPI.chat.updateGroup(groupDetails);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	sdkSocket?.on(EVENTS.CHAT_RECEIVED_MESSAGE, (message: any) =>
