@@ -83,8 +83,9 @@ const Meeting = () => {
 		if (adminList?.includes(address!)) {
 			console.log('adding');
 			const newPeer = await getProfileByPeerId(peerIds[peerIds.length - 1]);
-			await addGroupMember(newPeer?.address);
-			console.log('New Peer Joined', peers, peerIds);
+			if (!membersList.includes(newPeer?.address)) {
+				await addGroupMember(newPeer?.address);
+			}
 		}
 	});
 
