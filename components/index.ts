@@ -9,6 +9,7 @@ import MeetingControls from './meeting-controls';
 import MeetingHeader from './meeting-header';
 import EmojiToolbar from './emoji-toolbar';
 import Chat from './chat';
+import SEO from './seo';
 
 export {
 	Sidebar,
@@ -22,4 +23,5 @@ export {
 	MeetingHeader,
 	EmojiToolbar,
 	Chat,
+	SEO,
 };
