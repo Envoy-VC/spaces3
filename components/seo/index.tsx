@@ -12,7 +12,7 @@ const SEO = () => (
 					'The ultimate audio conferencing solution with token gating, customizable profiles, and real-time collaboration features.',
 				images: [
 					{
-						url: 'hhttps://i.ibb.co/zs7rmJG/og.png',
+						url: 'https://i.ibb.co/zs7rmJG/og.png',
 						width: 1200,
 						height: 630,
 						alt: 'spaces3 Open Graph Image',
